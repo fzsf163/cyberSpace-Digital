@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export function CtaSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,7 +31,7 @@ export function CtaSection() {
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="max-w-350 mx-auto px-6 lg:px-12">
         <div
           className={`relative border border-foreground transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -84,7 +84,7 @@ export function CtaSection() {
               </div>
 
               {/* Right image */}
-              <div className="hidden lg:flex items-end justify-center w-[600px] h-[650px] -mr-16">
+              <div className="hidden lg:flex items-end justify-center w-150 h-162.5 -mr-16">
                 <img
                   src="/images/bridge.png"
                   alt="Two trees connected by glowing arcs"
