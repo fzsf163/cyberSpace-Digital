@@ -10,8 +10,7 @@ Package manager is pnpm (pinned via `packageManager` in [package.json](package.j
 - `pnpm build` — production build (static export, see below)
 - `pnpm start` — serve the production build
 - `pnpm lint` — run ESLint (`eslint .`)
-
-There is no test suite/framework configured in this repo.
+- `pnpm test` — run unit tests once (Vitest + React Testing Library, jsdom); `pnpm test:watch` for watch mode. Tests are colocated next to source files as `*.test.ts(x)`.
 
 ## Architecture
 
@@ -32,4 +31,4 @@ This is a single-page marketing/landing site for a fictional "COMPUTE" AI-agent 
 
 ## Digital agency rebuild (in progress)
 
-This site is being rebuilt from the COMPUTE product landing page into a two-page digital agency site (`/` home + `/work` view-all works page). The rules for that rebuild live in [docs/](docs/README.md), split by concern (planning, design, code, test, content structure, component conventions, deployment) so each subagent only loads what it needs. Matching subagents are defined in `.claude/agents/{planning,design,code,test}.md`. Read `docs/README.md` before starting any work on this rebuild — the architecture described above still reflects the current (pre-rebuild) state of the code.
+This site is being rebuilt from the COMPUTE product landing page into a two-page digital agency site (`/` home + `/work` view-all works page). The rules for that rebuild live in [docs/](docs/README.md), split by concern (planning, design, code, test, content structure, component conventions, deployment) so each subagent only loads what it needs. Matching subagents are defined in `.claude/agents/{planning,design,code,test,docker}.md`. Read `docs/README.md` before starting any work on this rebuild — the architecture described above still reflects the current (pre-rebuild) state of the code.
