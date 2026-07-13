@@ -10,7 +10,7 @@ description: Package the current working-tree changes into a pull request for fz
 ## Steps
 
 1. **Pre-flight.** `git status --short` to see what's shipping. Run `pnpm lint` and `pnpm test` first (docs/test.md checklist) — fix or explicitly flag failures rather than committing them silently. If a PR already exists for this branch, just push the new commits and re-share its URL.
-2. **Branch.** Never commit directly to `main`. If on it: `git checkout -b <type>/<kebab-slug>` where type is `feat`/`fix`/`docs`/`chore`, named for the substance of the change.
+2. **Branch.** Never commit directly to `main`, and **never run `git pull`** — the user syncs their own checkout. Branch from the remote tip so being behind never matters: `git fetch origin && git checkout -b <type>/<kebab-slug> origin/main` (type: `feat`/`fix`/`docs`/`chore`, named for the substance of the change). If uncommitted work sits on an outdated base, `git stash push -u`, create the branch from `origin/main`, then `git stash pop`. Leave local `main` wherever the user has it.
 3. **Commit in logical units.** Group related files (e.g. config switch / test setup / docs) into separate commits rather than one blob — it reads better in review — but don't over-split. Message format: imperative summary line, blank line, short body explaining *why*. End every message with:
    ```
    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
