@@ -20,11 +20,11 @@ describe("WorkCard", () => {
 
     expect(screen.getByRole("heading", { name: "Test Project" })).toBeInTheDocument();
     // The category is rendered as-authored; the UI uppercases it with CSS
-    // (`uppercase` utility on the category/year row), not by transforming
-    // the text itself.
+    // (`uppercase` utility on the category chip), not by transforming the
+    // text itself.
     const category = screen.getByText("Brand");
     expect(category).toBeInTheDocument();
-    expect(category.parentElement).toHaveClass("uppercase");
+    expect(category).toHaveClass("uppercase");
     expect(screen.getByText("2025")).toBeInTheDocument();
     expect(screen.getByText("Acme Health")).toBeInTheDocument();
     expect(screen.getByText("A one-line summary of the test project.")).toBeInTheDocument();

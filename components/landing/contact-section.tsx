@@ -70,6 +70,24 @@ export function ContactSection() {
 
   return (
     <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Repeated word strip */}
+      <div className="overflow-hidden mb-12 lg:mb-16" aria-hidden="true">
+        <div className="flex w-max animate-contact-marquee">
+          {[0, 1].map((half) => (
+            <div key={half} className="flex shrink-0 items-center">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="pr-12 text-6xl lg:text-8xl font-display text-foreground/5 whitespace-nowrap"
+                >
+                  Contact
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         <div
           className={`relative border border-foreground transition-all duration-1000 ${
@@ -185,6 +203,20 @@ export function ContactSection() {
           <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes contact-marquee {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-contact-marquee {
+          animation: contact-marquee 45s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }

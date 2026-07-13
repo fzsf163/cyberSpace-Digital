@@ -1,8 +1,10 @@
+import { AboutSection } from "@/components/landing/about-section";
+import { ArticlesSection } from "@/components/landing/articles-section";
 import { ContactSection } from "@/components/landing/contact-section";
+import { CtaMarquee } from "@/components/landing/cta-marquee";
 import { FeaturedWorkSection } from "@/components/landing/featured-work-section";
 import { FooterSection } from "@/components/landing/footer-section";
 import { HeroSection } from "@/components/landing/hero-section";
-import { MetricsSection } from "@/components/landing/metrics-section";
 import { Navigation } from "@/components/landing/navigation";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { ProcessSection } from "@/components/landing/process-section";
@@ -14,11 +16,14 @@ export default function Home() {
     <main className="relative min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
-      <ServicesSection />
-      <ProcessSection />
+      <AboutSection />
+      <CtaMarquee />
       <FeaturedWorkSection />
-      <MetricsSection />
+      <ServicesSection />
+      <CtaMarquee />
+      <ProcessSection />
       <TestimonialsSection />
+      <ArticlesSection />
       <PricingSection />
       <ContactSection />
       <FooterSection />
