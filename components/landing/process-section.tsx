@@ -5,34 +5,30 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "01",
-    title: "Discover",
-    subtitle: "the brief",
-    description: "We dig into your business, audience, and goals to define a sharp creative and technical brief.",
+    title: "Discovery &",
+    subtitle: "consultation.",
+    description:
+      "We dig into your business, audience, and goals to define a sharp creative and technical brief.",
   },
   {
     number: "02",
-    title: "Design",
-    subtitle: "the system",
-    description: "Brand, UX, and UI come together into a cohesive design system, validated with real users.",
+    title: "Strategy &",
+    subtitle: "design.",
+    description:
+      "Brand, UX, and UI come together into a cohesive design system, validated with real users.",
   },
   {
     number: "03",
-    title: "Build",
-    subtitle: "the product",
-    description: "Engineering turns designs into a fast, accessible, production-ready site or product.",
-  },
-  {
-    number: "04",
-    title: "Launch",
-    subtitle: "& iterate",
-    description: "We ship, measure, and iterate — refining based on real usage and performance data.",
+    title: "Build, launch",
+    subtitle: "& iterate.",
+    description:
+      "Engineering ships a fast, accessible product — then we measure and refine on real usage data.",
   },
 ];
 
 export function ProcessSection() {
-  const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -46,117 +42,82 @@ export function ProcessSection() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section
-      id="process"
-      ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-[oklch(0.09_0.01_260)] text-white overflow-hidden"
-    >
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white/[0.02] blur-[100px] pointer-events-none" />
-
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Header — titre + image cerisier */}
-        <div className="relative mb-0 lg:mb-0 grid lg:grid-cols-2 gap-4 lg:gap-12 items-end">
-          {/* Titre colonne gauche */}
-          <div className="overflow-hidden pb-0 lg:pb-32">
-            <div className={`transition-all duration-1000 ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"}`}>
-              <span className="inline-flex items-center gap-3 text-sm font-mono text-white/40 mb-8">
-                <span className="w-12 h-px bg-white/20" />
-                Process
-              </span>
-            </div>
-
-            <h2 className={`text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.85] transition-all duration-1000 delay-100 ${
-              isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
-            }`}>
-              <span className="block">Discover.</span>
-              <span className="block text-white/30">Design.</span>
-              <span className="block text-white/10">Ship.</span>
-            </h2>
-          </div>
-
-          {/* Image cerisier — se colle en bas sur les blocs */}
-          <div className={`relative h-[320px] lg:h-[640px] overflow-hidden transition-all duration-1000 delay-200 ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}>
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/tree-uAia6REvB137CQyHFCf0za3O6h2zKO.png"
-              alt=""
-              aria-hidden="true"
-              className="absolute bottom-0 left-0 w-full h-full object-contain object-bottom"
-            />
-            {/* Fade sur le bord gauche */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.09_0.01_260)] via-transparent to-transparent pointer-events-none" />
-          </div>
+    <section id="process" ref={sectionRef} className="relative py-24 lg:py-32 bg-[oklch(0.09_0.01_260)]">
+      <div className="max-w-350 mx-auto px-6 lg:px-12">
+        {/* Header */}
+        <div className="mb-16 lg:mb-24">
+          <span
+            className={`inline-flex items-center gap-3 text-sm font-mono text-white/40 mb-6 transition-all duration-700 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <span className="w-12 h-px bg-white/20" />
+            Working steps
+          </span>
+          <h2
+            className={`text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] text-white transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            Solution in <span className="text-white/30">process.</span>
+          </h2>
         </div>
 
-        {/* Horizontal Steps Layout */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Step rows */}
+        <div className="mb-20 lg:mb-28">
           {steps.map((step, index) => (
-            <button
+            <div
               key={step.number}
-              type="button"
-              onClick={() => setActiveStep(index)}
-              className={`relative text-left p-8 lg:p-10 border transition-all duration-500 ${
-                activeStep === index
-                  ? "bg-[#000000] border-white/60"
-                  : "bg-[#000000] border-white/25 hover:border-white/50"
+              className={`group grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-10 lg:py-14 border-t border-white/10 last:border-b transition-all duration-700 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
+              style={{ transitionDelay: `${index * 120}ms` }}
             >
-              {/* Step number with animated line */}
-              <div className="flex items-center gap-4 mb-8">
-                <span className={`text-4xl font-display transition-colors duration-300 ${
-                  activeStep === index ? "text-[#eca8d6]" : "text-white/20"
-                }`}>
+              <div className="lg:col-span-2 flex items-baseline gap-3">
+                <span className="text-sm font-mono text-white/40 uppercase tracking-widest">
+                  Step
+                </span>
+                <span className="text-5xl lg:text-6xl font-display text-white/20 group-hover:text-white/60 transition-colors duration-500">
                   {step.number}
                 </span>
-                <div className="flex-1 h-px bg-white/10 overflow-hidden">
-                  {activeStep === index && (
-                    <div className="h-full bg-[#eca8d6]/50 animate-progress" />
-                  )}
-                </div>
               </div>
-
-              {/* Title */}
-              <h3 className="text-3xl lg:text-4xl font-display mb-2">
+              <h3 className="lg:col-span-6 text-4xl lg:text-6xl font-display text-white leading-[1.02] transition-transform duration-500 group-hover:translate-x-2">
                 {step.title}
+                <br />
+                <span className="text-white/40">{step.subtitle}</span>
               </h3>
-              <span className="text-xl text-white/40 font-display block mb-6">
-                {step.subtitle}
-              </span>
-
-              {/* Description */}
-              <p className={`text-white/60 leading-relaxed transition-opacity duration-300 ${
-                activeStep === index ? "opacity-100" : "opacity-60"
-              }`}>
+              <p className="lg:col-span-4 text-white/60 leading-relaxed">
                 {step.description}
               </p>
-
-              {/* Active indicator */}
-              <div className={`absolute bottom-0 left-0 right-0 h-1 bg-[#eca8d6] transition-transform duration-500 origin-left ${
-                activeStep === index ? "scale-x-100" : "scale-x-0"
-              }`} />
-            </button>
+            </div>
           ))}
         </div>
-      </div>
 
-      <style jsx>{`
-        @keyframes progress {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-        .animate-progress {
-          animation: progress 6s linear forwards;
-        }
-      `}</style>
+        {/* Founder quote */}
+        <div
+          className={`max-w-3xl transition-all duration-1000 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <p className="text-2xl lg:text-3xl font-display text-white/80 leading-snug mb-8">
+            &ldquo;Every engagement runs through the same senior team, start to
+            finish — that&apos;s how the work stays sharp from brief to
+            launch.&rdquo;
+          </p>
+          <div className="flex items-center gap-5">
+            <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
+              <span className="font-display text-xl text-white">A</span>
+            </div>
+            <div>
+              <p className="text-white font-medium">Alex Morgan</p>
+              <p className="text-white/50 text-sm">
+                Founder &amp; Creative Director, CyberSpace Digital
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
