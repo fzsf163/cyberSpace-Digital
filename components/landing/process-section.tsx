@@ -5,43 +5,31 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "01",
-    title: "Define",
-    subtitle: "your agent",
-    description: "Describe what your agent should do. Set its capabilities, constraints, and goals in natural language or code.",
-    code: `const researcher = new Agent({
-  role: 'Research Analyst',
-  capabilities: ['web', 'docs', 'api'],
-  memory: true,
-  autonomy: 'full'
-})`,
+    title: "Discover",
+    subtitle: "the brief",
+    description: "We dig into your business, audience, and goals to define a sharp creative and technical brief.",
   },
   {
     number: "02",
-    title: "Assign",
-    subtitle: "the task",
-    description: "Give your agent a mission. It breaks down complex tasks into steps and executes them autonomously.",
-    code: `await researcher.execute({
-  task: 'Analyze competitor pricing',
-  sources: ['public-data', 'news'],
-  output: 'structured-report',
-  deadline: '2h'
-})`,
+    title: "Design",
+    subtitle: "the system",
+    description: "Brand, UX, and UI come together into a cohesive design system, validated with real users.",
   },
   {
     number: "03",
-    title: "Monitor",
-    subtitle: "& scale",
-    description: "Track progress in real-time. Spin up more agents as needed. Pay only for compute used.",
-    code: `optimus.dashboard({
-  agents: [researcher],
-  metrics: ['tasks', 'latency', 'cost'],
-  alerts: true
-})
-// 847 tasks completed today`,
+    title: "Build",
+    subtitle: "the product",
+    description: "Engineering turns designs into a fast, accessible, production-ready site or product.",
+  },
+  {
+    number: "04",
+    title: "Launch",
+    subtitle: "& iterate",
+    description: "We ship, measure, and iterate — refining based on real usage and performance data.",
   },
 ];
 
-export function HowItWorksSection() {
+export function ProcessSection() {
   const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -67,7 +55,7 @@ export function HowItWorksSection() {
 
   return (
     <section
-      id="how-it-works"
+      id="process"
       ref={sectionRef}
       className="relative py-24 lg:py-32 bg-[oklch(0.09_0.01_260)] text-white overflow-hidden"
     >
@@ -84,13 +72,13 @@ export function HowItWorksSection() {
                 Process
               </span>
             </div>
-            
+
             <h2 className={`text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.85] transition-all duration-1000 delay-100 ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
             }`}>
-              <span className="block">Define.</span>
-              <span className="block text-white/30">Deploy.</span>
-              <span className="block text-white/10">Scale.</span>
+              <span className="block">Discover.</span>
+              <span className="block text-white/30">Design.</span>
+              <span className="block text-white/10">Ship.</span>
             </h2>
           </div>
 
@@ -110,15 +98,15 @@ export function HowItWorksSection() {
         </div>
 
         {/* Horizontal Steps Layout */}
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map((step, index) => (
             <button
               key={step.number}
               type="button"
               onClick={() => setActiveStep(index)}
-              className={`relative text-left p-8 lg:p-12 border transition-all duration-500 ${
-                activeStep === index 
-                  ? "bg-[#000000] border-white/60" 
+              className={`relative text-left p-8 lg:p-10 border transition-all duration-500 ${
+                activeStep === index
+                  ? "bg-[#000000] border-white/60"
                   : "bg-[#000000] border-white/25 hover:border-white/50"
               }`}
             >
@@ -158,9 +146,6 @@ export function HowItWorksSection() {
             </button>
           ))}
         </div>
-
-        {/* Code Preview - Large terminal */}
-        
       </div>
 
       <style jsx>{`

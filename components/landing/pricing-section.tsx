@@ -5,48 +5,48 @@ import { ArrowRight, Check, Zap } from "lucide-react";
 
 const plans = [
   {
-    name: "Explorer",
-    description: "For tinkering and small automations",
-    price: { monthly: 0, annual: 0 },
+    name: "Starter",
+    description: "For teams needing focused, ongoing design support",
+    price: { monthly: 2800, annual: 2400 },
     features: [
-      "3 concurrent agents",
-      "1,000 tasks/month",
-      "Community support",
-      "Basic logging",
-      "Public integrations",
+      "1 active project",
+      "20 hrs/month design & dev",
+      "Async updates",
+      "Shared Slack channel",
+      "Monthly strategy call",
     ],
-    cta: "Start free",
+    cta: "Start retainer",
     highlight: false,
   },
   {
-    name: "Builder",
-    description: "For teams shipping with agents",
-    price: { monthly: 79, annual: 65 },
+    name: "Growth",
+    description: "For teams shipping consistently across brand, web & product",
+    price: { monthly: 6500, annual: 5500 },
     features: [
-      "25 concurrent agents",
-      "50,000 tasks/month",
-      "Priority support",
-      "Full audit trails",
-      "Private integrations",
-      "Team workspaces",
-      "Custom agent roles",
+      "3 active projects",
+      "60 hrs/month design & dev",
+      "Dedicated project lead",
+      "Priority turnaround",
+      "Weekly strategy calls",
+      "Brand + web + product coverage",
+      "Quarterly roadmap planning",
     ],
-    cta: "Start trial",
+    cta: "Start retainer",
     highlight: true,
   },
   {
-    name: "Scale",
-    description: "For agent-first organizations",
+    name: "Enterprise",
+    description: "For organizations needing an embedded team",
     price: { monthly: null, annual: null },
     features: [
-      "Unlimited agents",
-      "Unlimited tasks",
-      "24/7 dedicated support",
-      "On-premise deployment",
-      "SLA guarantee",
-      "Custom LLM routing",
-      "Advanced security",
-      "Dedicated compute",
+      "Unlimited projects",
+      "Dedicated pod (design + dev + strategy)",
+      "Priority on-call availability",
+      "Custom SLA",
+      "Quarterly business reviews",
+      "Dedicated account director",
+      "Flexible scope reallocation",
+      "Priority roadmap access",
     ],
     cta: "Contact sales",
     highlight: false,
@@ -78,14 +78,14 @@ export function PricingSection() {
           <div className="lg:col-span-7">
             <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-8">
               <span className="w-12 h-px bg-foreground/30" />
-              Pricing
+              Engagement models
             </span>
             <h2 className={`text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}>
-              Pay for
+              Packages that
               <br />
-              <span className="text-stroke">results.</span>
+              <span className="text-stroke">scale with you.</span>
             </h2>
           </div>
           
@@ -190,19 +190,19 @@ export function PricingSection() {
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#eca8d6]" />
-              Encrypted execution
+              Dedicated project lead
             </span>
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#eca8d6]" />
-              Full audit logs
+              Transparent reporting
             </span>
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-[#eca8d6]" />
-              Multi-model routing
+              No long-term lock-in
             </span>
           </div>
-          <a href="#" className="text-sm underline underline-offset-4 hover:text-foreground transition-colors">
-            Compare all features
+          <a href="#contact" className="text-sm underline underline-offset-4 hover:text-foreground transition-colors">
+            Talk to us about custom scopes
           </a>
         </div>
       </div>

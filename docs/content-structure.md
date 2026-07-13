@@ -19,10 +19,10 @@ Replace the current COMPUTE-product sections with the agency equivalents, in thi
 6. **Metrics** — stats: years active, projects shipped, clients, retention, etc. (keep `metrics-section`, reskin copy)
 7. **Testimonials** — client quotes (keep `testimonials-section`)
 8. **Pricing / Engagement models** — packages or ways to work with the agency (keep `pricing-section`, reskin copy)
-9. **CTA** — final contact/start-a-project prompt (keep `cta-section`)
+9. **Contact** — final pitch + a contact form (name, email, message). Replaces `cta-section` — don't keep a separate banner-only CTA section directly above it, that would be a redundant bottom-of-page prompt. No backend: submit handler doesn't call an API (static export, see [code.md](code.md)); show a client-side success state (e.g. a toast) instead.
 10. **Footer** — keep `footer-section`
 
-`security-section` and `developers-section` are COMPUTE-product-specific — drop them, don't try to reskin them into agency copy. Confirm with the user before repurposing either into something new.
+`security-section`, `developers-section`, and `integrations-section` are COMPUTE-product-specific — drop them entirely, don't try to reskin them into agency copy.
 
 ## Work/project data model
 

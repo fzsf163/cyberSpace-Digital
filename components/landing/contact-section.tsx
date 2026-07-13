@@ -1,13 +1,42 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { ArrowRight } from "lucide-react";
 
-export function CtaSection() {
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { cn } from "@/lib/utils";
+
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Tell us your name."),
+  email: z.string().email("Enter a valid email address."),
+  message: z.string().min(10, "Give us a few more details about your project."),
+});
+
+type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+export function ContactSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: { name: "", email: "", message: "" },
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,8 +58,18 @@ export function CtaSection() {
     });
   };
 
+  // Static export — there is no backend/API route to submit to. Validate
+  // client-side and show a success state, as if the message had been sent.
+  function onSubmit(values: ContactFormValues) {
+    void values;
+    toast.success("Message sent", {
+      description: "Thanks for reaching out — we'll get back to you within 1-2 business days.",
+    });
+    form.reset();
+  }
+
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         <div
           className={`relative border border-foreground transition-all duration-1000 ${
@@ -39,57 +78,104 @@ export function CtaSection() {
           onMouseMove={handleMouseMove}
         >
           {/* Spotlight effect */}
-          <div 
+          <div
             className="absolute inset-0 opacity-10 pointer-events-none transition-opacity duration-300"
             style={{
               background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(0,0,0,0.15), transparent 40%)`
             }}
           />
-          
+
           <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-24">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-16">
               {/* Left content */}
-              <div className="flex-1">
+              <div className="flex-1 lg:max-w-md">
+                <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-8">
+                  <span className="w-12 h-px bg-foreground/30" />
+                  Contact
+                </span>
+
                 <h2 className="text-6xl md:text-7xl lg:text-[72px] font-display tracking-tight mb-8 leading-[0.95]">
-                  Ready to delegate
+                  Let&apos;s build
                   <br />
-                  to AI agents?
+                  something.
                 </h2>
 
                 <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
-                  Join teams automating complex workflows with COMPUTE agents. 
-                  Deploy your first agent in minutes.
+                  Tell us about your project. We reply to every inquiry within
+                  1-2 business days with next steps.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-start gap-4">
-                  <Button
-                    size="lg"
-                    className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
-                  >
-                    Deploy your first agent
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
-                  >
-                    Book a demo
-                  </Button>
-                </div>
-
-                <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  1,000 free tasks with COMPUTE
+                <p className="text-sm text-muted-foreground font-mono">
+                  hello@cyberspace.digital
                 </p>
               </div>
 
-              {/* Right image */}
-              <div className="hidden lg:flex items-end justify-center w-150 h-162.5 -mr-16">
-                <img
-                  src="/images/bridge.png"
-                  alt="Two trees connected by glowing arcs"
-                  className="w-full h-full object-contain object-bottom"
-                />
+              {/* Right: contact form */}
+              <div className="w-full lg:max-w-md">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                            Name
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                            Email
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="you@company.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                            Message
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="What are you looking to build?"
+                              className="min-h-32"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={form.formState.isSubmitting}
+                      className={cn(
+                        "w-full bg-foreground hover:bg-foreground/90 text-background h-14 text-base rounded-full group"
+                      )}
+                    >
+                      Send message
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </form>
+                </Form>
               </div>
             </div>
           </div>

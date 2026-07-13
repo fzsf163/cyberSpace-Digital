@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const words = ["automate", "delegate", "execute", "scale"];
+const words = ["launch", "scale", "convert", "grow"];
 
 function BlurWord({ word, trigger }: { word: string; trigger: number }) {
   const letters = word.split("");
@@ -186,7 +186,7 @@ export function HeroSection() {
           >
             <span className="inline-flex items-center gap-3 text-sm font-mono text-white/60">
               <span className="w-8 h-px bg-white/30" />
-              Autonomous AI agents for distributed computing
+              A digital agency for brand, web &amp; product
             </span>
           </div>
 
@@ -200,10 +200,10 @@ export function HeroSection() {
               }`}
             >
               <span className="block whitespace-nowrap">
-                Distributed compute,
+                Digital products,
               </span>
               <span className="block whitespace-nowrap">
-                agents that{" "}
+                brands that{" "}
                 <span className="relative inline-block">
                   <BlurWord
                     word={words[wordIndex]}
@@ -224,9 +224,9 @@ export function HeroSection() {
       >
         <div className="max-w-350 mx-auto flex items-start gap-10 lg:gap-20">
           {[
-            { value: "3500+", label: "autonomous agents active" },
-            { value: "99.7%", label: "distributed uptime" },
-            { value: "<50ms", label: "execution latency" },
+            { value: "120+", label: "projects delivered" },
+            { value: "98%", label: "client retention rate" },
+            { value: "9 yrs", label: "in business" },
           ].map(stat => (
             <div
               key={stat.label}

@@ -6,35 +6,35 @@ import { useEffect, useRef, useState } from "react";
 const testimonials = [
   {
     quote:
-      "Our agents handle 80% of our customer support tickets autonomously. The ROI was immediate.",
+      "The rebrand gave us a visual identity that finally matches how ambitious we are. Every touchpoint feels considered.",
     author: "Sarah Chen",
     role: "CTO",
     company: "Meridian Labs",
-    metric: { value: "80%", label: "Ticket resolution" },
+    metric: { value: "2.4x", label: "Brand recall lift" },
   },
   {
     quote:
-      "We deployed research agents that work 24/7. They surface insights we'd never find manually.",
+      "They rebuilt our storefront from the ground up and checkout friction basically disappeared overnight.",
     author: "Marcus Webb",
-    role: "Head of Research",
-    company: "Flux Systems",
-    metric: { value: "10x", label: "Research output" },
+    role: "Head of Growth",
+    company: "Northwind Goods",
+    metric: { value: "40%", label: "Faster checkout" },
   },
   {
     quote:
-      "The multi-agent orchestration is incredible. Complex workflows that took weeks now run in hours.",
+      "The product design work is exceptional. Complex workflows that used to confuse users now feel obvious.",
     author: "Elena Rodriguez",
-    role: "VP Engineering",
-    company: "Beacon AI",
-    metric: { value: "40x", label: "Faster workflows" },
+    role: "VP Product",
+    company: "Atlas Logistics",
+    metric: { value: "3x", label: "Faster onboarding" },
   },
   {
     quote:
-      "Security was our biggest concern. The sandboxing and audit trails gave us full confidence.",
+      "Our organic traffic tripled within six months. The growth team treats our budget like it's their own.",
     author: "James Liu",
-    role: "CISO",
-    company: "Prism Analytics",
-    metric: { value: "0", label: "Security incidents" },
+    role: "Marketing Director",
+    company: "Verdant Foods",
+    metric: { value: "3x", label: "Organic traffic" },
   },
 ];
 
@@ -118,8 +118,8 @@ export function TestimonialsSection() {
                   : "opacity-0 translate-y-4"
               }`}
             >
-              Trusted by teams
-              <span className="text-background/40"> worldwide.</span>
+              Trusted by brands
+              <span className="text-background/40"> we&apos;ve grown.</span>
             </h2>
           </div>
 

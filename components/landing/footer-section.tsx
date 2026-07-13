@@ -4,34 +4,33 @@ import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 const footerLinks = {
-  Product: [
-    { name: "Agent capabilities", href: "#features" },
-    { name: "How it works", href: "#how-it-works" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Integrations", href: "#integrations" },
-  ],
-  Developers: [
-    { name: "Documentation", href: "#developers" },
-    { name: "Agent SDK", href: "#" },
-    { name: "API Reference", href: "#developers" },
-    { name: "Status", href: "#" },
+  Services: [
+    { name: "Brand & Identity", href: "#services" },
+    { name: "Web Design & Development", href: "#services" },
+    { name: "Product Design", href: "#services" },
+    { name: "Growth & Marketing", href: "#services" },
   ],
   Company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
+    { name: "Work", href: "/work" },
+    { name: "Process", href: "#process" },
+    { name: "Pricing", href: "#pricing" },
     { name: "Careers", href: "#", badge: "Hiring" },
-    { name: "Contact", href: "#" },
+  ],
+  Resources: [
+    { name: "Case studies", href: "/work" },
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "FAQ", href: "#" },
+    { name: "Blog", href: "#" },
   ],
   Legal: [
     { name: "Privacy", href: "#" },
     { name: "Terms", href: "#" },
-    { name: "Security", href: "#security" },
   ],
 };
 
 const socialLinks = [
-  { name: "Twitter", href: "#" },
-  { name: "GitHub", href: "#" },
+  { name: "Instagram", href: "#" },
+  { name: "Dribbble", href: "#" },
   { name: "LinkedIn", href: "#" },
 ];
 
@@ -115,12 +114,12 @@ export function FooterSection() {
             {/* Brand Column */}
             <div className="col-span-2">
               <a href="#" className="inline-flex items-center gap-2 mb-6">
-                <span className="text-2xl font-display text-white">COMPUTE</span>
-                <span className="text-xs text-white/40 font-mono">TM</span>
+                <span className="text-2xl font-display text-white">CyberSpace</span>
+                <span className="text-xs text-white/40 font-mono">DIGITAL</span>
               </a>
 
               <p className="text-white/50 leading-relaxed mb-8 max-w-xs text-sm">
-                Autonomous AI agents for distributed computing. Delegate complex tasks to intelligent workers.
+                CyberSpace Digital is a full-service digital agency for brand, web, product, and growth.
               </p>
 
               {/* Social Links */}
@@ -167,13 +166,13 @@ export function FooterSection() {
         {/* Bottom Bar */}
         <div className="py-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-white/30">
-            &copy; 2025 COMPUTE. All rights reserved.
+            &copy; 2026 CyberSpace Digital. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 text-sm text-white/30">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#eca8d6]" />
-              All agents operational
+              Currently accepting new projects
             </span>
           </div>
         </div>
