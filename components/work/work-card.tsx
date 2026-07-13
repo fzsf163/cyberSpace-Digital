@@ -1,12 +1,12 @@
 import { ArrowUpRight } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import type { WorkItem } from "@/lib/data/work";
+import { cn } from "@/lib/utils";
 
 export function WorkCard({ item }: { item: WorkItem }) {
   const content = (
     <>
-      <div className="relative aspect-[4/3] overflow-hidden border-b border-foreground/10">
+      <div className="relative aspect-4/3 overflow-hidden border-b border-foreground/10">
         <img
           src={item.coverImage}
           alt={item.title}
