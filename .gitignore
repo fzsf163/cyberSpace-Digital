@@ -15,9 +15,10 @@ node_modules
 .next/
 .DS_Store
 
-# Claude Code local config (agent definitions are tracked, rest is local-only)
+# Claude Code local config (agent + skill definitions are tracked, rest is local-only)
 .claude/*
 !.claude/agents/
+!.claude/skills/
 
 # Generated dev reports
 reports/
