@@ -4,31 +4,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is pnpm (pinned via `packageManager` in [package.json](package.json); Docker build uses `corepack prepare pnpm@latest`).
+Package manager is pnpm (pinned via `packageManager` in [package.json](package.json)).
 
 - `pnpm dev` — start the Next.js dev server
-- `pnpm build` — production build (static export, see below)
+- `pnpm build` — production build (standalone output, see below)
 - `pnpm start` — serve the production build
-- `pnpm lint` — run ESLint (`eslint .`)
-- `pnpm test` — run unit tests once (Vitest + React Testing Library, jsdom); `pnpm test:watch` for watch mode. Tests are colocated next to source files as `*.test.ts(x)`.
+- `pnpm lint` — run ESLint (flat config in [eslint.config.mjs](eslint.config.mjs))
+- `pnpm test` — run unit tests once (Vitest + React Testing Library, jsdom); `pnpm test:watch` for watch mode
 
 ## Architecture
 
-This is a single-page marketing/landing site for a fictional "COMPUTE" AI-agent product, generated with v0.app and built on Next.js 16 (App Router).
+Two-page digital agency site for **CyberSpace Digital**, built on Next.js 16 (App Router) + React 19. Originally a v0.app-generated "COMPUTE" product page, since fully rebuilt into agency content — the visual system (dark oklch palette, animation patterns) was kept.
 
-- **Single page composition**: [app/page.tsx](app/page.tsx) renders one long page by stacking section components from `components/landing/` in order (Navigation, Hero, Features, HowItWorks, Infrastructure, Metrics, Integrations, Security, Developers, Testimonials, Pricing, CTA, Footer). To add/reorder/remove a section, edit that list — each section is self-contained.
-- **`components/landing/`** — page-specific sections. `ascii-scene.tsx` renders a 3D/canvas scene using `@react-three/fiber` + `three`.
-- **`components/ui/`** — shadcn/ui primitives (`style: "new-york"`, configured in [components.json](components.json)). Path aliases: `@/components`, `@/components/ui`, `@/lib`, `@/hooks` (all map to root via `@/*` in [tsconfig.json](tsconfig.json)). Use the shadcn CLI conventions when adding new primitives rather than hand-rolling them.
-- **Styling**: Tailwind CSS v4, CSS-first config (no `tailwind.config.*` file) — theme tokens/colors are defined as CSS variables directly in [app/globals.css](app/globals.css) using `@import 'tailwindcss'` and `@theme`/`:root` variables (oklch color space). Dark mode uses a custom variant (`@custom-variant dark (&:is(.dark *))`).
-- **`lib/utils.ts`** — `cn()` helper (clsx + tailwind-merge) used throughout for conditional class names.
-- **`hooks/`** — `use-mobile.ts`, `use-toast.ts` shared hooks.
+- **Pages**: `/` ([app/page.tsx](app/page.tsx)) stacks section components from `components/landing/` in order: Navigation → Hero → Services → Process → FeaturedWork → Metrics → Testimonials → Pricing → Contact → Footer. `/work` ([app/work/page.tsx](app/work/page.tsx)) is the view-all portfolio grid, sharing Navigation/Footer.
+- **Section copy lives in the section file** — each `components/landing/*-section.tsx` is self-contained (`"use client"`, const arrays at the top hold the content). The one exception: Featured Work reads from the shared data source.
+- **`lib/data/work.ts`** — single source of truth for portfolio items (`WorkItem[]`); both the home Featured Work section and `/work` render it via the one shared `components/work/work-card.tsx`. Never fork a second card or a second list.
+- **Contact form** (`contact-section.tsx`) — react-hook-form + zod + sonner toast; client-side only, deliberately no API call (no backend exists).
+- **`components/ui/`** — 57 shadcn/ui primitives (`style: "new-york"`, [components.json](components.json)). Add via shadcn CLI conventions, don't hand-roll. Path aliases `@/*` → repo root ([tsconfig.json](tsconfig.json)); `cn()` from `lib/utils.ts` for conditional classes.
+- **Styling**: Tailwind CSS v4, CSS-first config — no `tailwind.config.*`; tokens are oklch CSS variables in [app/globals.css](app/globals.css). Fonts: Instrument Sans (body), Instrument Serif (display), JetBrains Mono (labels/meta), wired in [app/layout.tsx](app/layout.tsx).
+- For per-file orientation (exports, anchor ids, known dead code), read [docs/codebase-map.md](docs/codebase-map.md) before exploring the tree.
 
-### Build/deploy shape
+## Testing
 
-- [next.config.mjs](next.config.mjs) sets `output: "export"` (fully static HTML export to `out/`), `images.unoptimized: true`, and `typescript.ignoreBuildErrors: true` — TS errors will not fail `pnpm build`, so don't rely on the build to catch type errors.
-- Deployment targets: Netlify ([netlify.toml](netlify.toml), publishes `out/`) and a Docker/nginx setup ([Dockerfile](Dockerfile), [compose.yaml](compose.yaml)) — multi-stage build that installs deps, runs `pnpm build`, and serves the static `out/` directory via Chainguard's hardened nginx image on port 8080.
-- Since output is a static export, no Next.js server-side features (API routes, middleware, ISR, server actions) are available — everything must work as static HTML/client-side JS.
+Vitest + React Testing Library (jsdom), colocated next to source as `*.test.ts(x)`. Config in [vitest.config.mts](vitest.config.mts); [vitest.setup.ts](vitest.setup.ts) stubs IntersectionObserver/ResizeObserver/matchMedia (jsdom lacks them; the animation-heavy sections need them). Tests import from `vitest` explicitly (no globals) and must never hit the network. No e2e framework.
 
-## Digital agency rebuild (in progress)
+## Build/deploy shape
 
-This site is being rebuilt from the COMPUTE product landing page into a two-page digital agency site (`/` home + `/work` view-all works page). The rules for that rebuild live in [docs/](docs/README.md), split by concern (planning, design, code, test, content structure, component conventions, deployment) so each subagent only loads what it needs. Matching subagents are defined in `.claude/agents/{planning,design,code,test,docker}.md`, and repeatable workflows are packaged as project skills in `.claude/skills/{pr,add-work,new-section,dev-report}/` — invoke those as slash commands (e.g. `/pr`) instead of re-deriving the workflow. Read `docs/README.md` before starting any work on this rebuild — the architecture described above still reflects the current (pre-rebuild) state of the code.
+- [next.config.mjs](next.config.mjs) sets `output: "standalone"` — `pnpm build` emits `.next/standalone/server.js`, a self-contained Node server. It does **not** include `public/` or `.next/static`; copy both alongside `server.js` to serve assets.
+- `typescript.ignoreBuildErrors: true` — a passing build proves nothing about types; check with `tsc --noEmit` when it matters. `images.unoptimized: true` — pre-size/compress images, nothing optimizes them at build time.
+- **Windows gotcha**: a running standalone server locks `.next/standalone` — stop it before `pnpm build` or the build fails with EBUSY.
+- **Deploy configs are currently stale**: [netlify.toml](netlify.toml) and the [Dockerfile](Dockerfile) still target the old static-export `out/` directory (Netlify "works" only because an obsolete `out/` is still committed). The Docker rework is specced in [docs/docker.md](docs/docker.md) for the `docker` agent.
+
+## Rules, agents, and skills
+
+Working rules live in [docs/](docs/README.md), split by concern (planning, design, code, test, docker, content structure, component conventions, deployment) — read `docs/README.md` for the index and load only what the task needs. Maintenance rule: any file add/rename/delete/repurpose updates its line in `docs/codebase-map.md` in the same change.
+
+Subagents: `.claude/agents/{planning,design,code,test,docker}.md`. Project skills (slash commands): `.claude/skills/{pr,add-work,new-section,dev-report}/` — invoke these for their workflows instead of re-deriving them. Note: `gh` CLI is intentionally not installed; PRs are created via the `/pr` skill's prefilled-link flow.
