@@ -1,5 +1,0 @@
-1:"$Sreact.fragment"
-2:I[44921,["/_next/static/chunks/0756l000e~qps.js","/_next/static/chunks/081g.xd17_6sc.js"],"ViewportBoundary"]
-3:I[44921,["/_next/static/chunks/0756l000e~qps.js","/_next/static/chunks/081g.xd17_6sc.js"],"MetadataBoundary"]
-4:"$Sreact.suspense"
-0:{"rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Work — CyberSpace Digital"}],["$","meta","1",{"name":"description","content":"Selected brand, web, product, and growth engagements delivered by CyberSpace Digital."}],["$","meta","2",{"name":"generator","content":"v0.app"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GIyzLhpJZUuaxYZM_v59B"}
