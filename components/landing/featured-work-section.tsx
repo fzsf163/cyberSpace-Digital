@@ -26,7 +26,7 @@ export function FeaturedWorkSection() {
   }, []);
 
   return (
-    <section id="work" ref={sectionRef} className="relative py-24 lg:py-32 bg-section-2">
+    <section id="work" ref={sectionRef} className="relative py-24 lg:py-32 bg-section">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="mb-16 lg:mb-20">

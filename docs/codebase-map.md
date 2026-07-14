@@ -2,7 +2,7 @@
 
 Orientation file: what lives where and what each file contains, so you don't have to re-explore the tree every session. **Keep this updated** — when you add, rename, delete, or repurpose a file, update the matching line here in the same change.
 
-Last synced: 2026-07-15 (light/dark mode + alternating section backgrounds, branch `feat/work-detail-cards-nav`).
+Last synced: 2026-07-15 (floating/route-aware navbar fix, theme-toggle rebuilt as a tap button, work-card 16:9, testimonials carousel, ClientLogos + Team sections added, Pricing/Articles removed, global thin dark scrollbar).
 
 ## Top-level layout
 
@@ -22,22 +22,24 @@ out/                  OBSOLETE former static-export output — still committed b
 
 Docs at root: [README.md](../README.md) (public-facing documentation — pages, commands, structure, deploy) and [CLAUDE.md](../CLAUDE.md) (Claude Code guidance). Config at root: [next.config.mjs](../next.config.mjs) (standalone output, images unoptimized, TS build errors ignored), [components.json](../components.json) (shadcn, new-york style), [tsconfig.json](../tsconfig.json) (`@/*` → root), [eslint.config.mjs](../eslint.config.mjs) (flat config; `react-hooks/set-state-in-effect` + `react-hooks/purity` disabled for the animation-heavy sections), [postcss.config.mjs](../postcss.config.mjs), deploy files ([netlify.toml](../netlify.toml), [Dockerfile](../Dockerfile), [compose.yaml](../compose.yaml)).
 
+`package.json` gained `embla-carousel-autoplay` (testimonials carousel autoplay plugin) and bumped `embla-carousel-react` `8.5.1` → `8.6.0` to satisfy its peer dependency — both via `pnpm add`, reflected in `pnpm-lock.yaml`.
+
 ## app/
 
 | File | Contents |
 |---|---|
 | `layout.tsx` | Root layout. Loads the 3 fonts as CSS variables (`--font-instrument` Sans / `--font-instrument-serif` / `--font-jetbrains` Mono), site metadata ("CyberSpace Digital — Brand, Web & Product Agency"), wraps `{children}` in `ThemeProvider` (`attribute="class"`, `defaultTheme="dark"`, `next-themes`) alongside `<ThemeToggle />`, Vercel `<Analytics />`, sonner `<Toaster />`. `<html>` carries `suppressHydrationWarning` (required by next-themes). |
-| `page.tsx` | Home (`/`). Pure composition — renders `HashScroll` then stacks the landing sections in order: Navigation → Hero → About → CtaMarquee → FeaturedWork → Services → CtaMarquee → Process → Testimonials → Articles → Pricing → Contact → Footer. Each section now owns its own alternating `bg-section` / `bg-section-2` background directly (no flat bg on `<main>`) — see `docs/design.md` for the exact alternation order; `Navigation` is the only piece excluded from it. |
+| `page.tsx` | Home (`/`). Pure composition — renders `HashScroll` then stacks the landing sections in order: Navigation → Hero → ClientLogos → About → CtaMarquee(`variant="b"`) → FeaturedWork → Services → Team → CtaMarquee(`variant="b"`) → Process → Testimonials → Contact → Footer. No Pricing/Articles sections (removed — no package tiers, no blog). Each section owns its own alternating `bg-section` / `bg-section-2` background directly (no flat bg on `<main>`) — see `docs/design.md` for the exact alternation order; `Navigation` is the only piece excluded from it. |
 | `work/page.tsx` | `/work`. Own `metadata`, "Selected projects / (2023 — 2026)* / All work." header, 2-col grid of ALL `workItems` via `WorkCard`, wrapped in shared Navigation + FooterSection. `<main>` uses a flat `bg-section` (single page, not alternating stacked sections). |
 | `work/[slug]/page.tsx` | `/work/[slug]` project detail page (SSG via `generateStaticParams` over `workItems`; `generateMetadata`; `notFound()` on bad slug). Breadcrumb, title + discipline tags, 16:9 banner, meta bar (industry/client/solution/year/website), Project summary (client needs + approach) / Challenges / Results body with a sticky "Services provided" aside, and prev/next project nav (wraps). Optional `WorkItem` detail fields fall back to defaults. Flat `bg-section`. |
-| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, `:root` (light) + `.dark` (dark) token blocks (`--background`, `--foreground`, `--section`/`--section-2` alternating section-bg pair — dark values are literal hex `#37353e`/`#44444e`, light values are oklch — `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. Utilities include `.corner-notch` (radial-gradient mask cutting a concave circle out of a card's top-right corner). The only styling config file — there is no tailwind.config. |
+| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, `:root` (light) + `.dark` (dark) token blocks (`--background`, `--foreground`, `--section`/`--section-2` alternating section-bg pair — dark values are literal hex `#37353e`/`#44444e`, light values are oklch — `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. `@layer base` also sets a global thin scrollbar (`scrollbar-width: thin` + `::-webkit-scrollbar*`) with a **fixed hardcoded dark color** (`#37353e` thumb / `#1e1c22` track) — deliberately the same in both light and dark mode, not theme-token-driven (user preference: don't let it flip to a light track in light mode). Utilities include `.corner-notch` (radial-gradient mask cutting a concave circle out of a card's top-right corner). The only styling config file — there is no tailwind.config. |
 
 ## components/ (top-level)
 
 | File | Contents |
 |---|---|
 | `theme-provider.tsx` | Thin `next-themes` `ThemeProvider` wrapper (`"use client"`). Mounted once in `app/layout.tsx`. |
-| `theme-toggle.tsx` | `ThemeToggle` — fixed right-edge half-capsule with a shadcn `Switch` (rotated vertical) between `Sun`/`Moon` icons; calls `useTheme()` to flip `light`/`dark`. Mounted once in `app/layout.tsx`, shows on every route. |
+| `theme-toggle.tsx` | `ThemeToggle` — fixed right-edge half-capsule **tap button** (not a shadcn `Switch` anymore — reverted to the original `feat/light-dark-mode` design: a single `motion.button` from the `motion` package that spring-animates a `Sun`⇄`Moon` icon swap via `AnimatePresence` on click). Button surface is a **solid** `bg-muted`/`border-border` (deliberately not translucent/`backdrop-blur` — an earlier translucent version blended into the page in both themes and was rejected). Icon colors: `Moon` uses `text-foreground` (dark mode), `Sun` uses a hardcoded `text-amber-800` (chosen after measuring: `text-foreground` alone measured ~18:1 contrast — objectively fine — but user found the plain dark sun icon visually flat; a bright accent like `amber-500`/`amber-300` was tried first but actually measures *worse* contrast against a light page since amber is itself high-luminance — `amber-800` is dark enough to both read as "sun-colored" and stay high-contrast). Both icons use `strokeWidth={2.75}` (thicker than lucide's default `2`). Calls `useTheme()` to flip `light`/`dark`. Mounted once in `app/layout.tsx`, shows on every route. |
 
 ## components/landing/
 
@@ -45,20 +47,20 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 
 | File | Export | Anchor | Contents |
 |---|---|---|---|
-| `navigation.tsx` | `Navigation` | — | Sticky nav. Section links (`/#services`, `/#process`, `/#pricing`, CTA `/#contact`) render via `SectionLink` so they work from any route; `/work` uses the client router. |
+| `navigation.tsx` | `Navigation` | — | Fixed floating pill nav — always inset from the viewport edges (`top-4/left-4/right-4`, tightening to `top-3/left-3/right-3` once scrolled) with `rounded-2xl` + `backdrop-blur-xl`, not a full-width bar that only becomes a pill on scroll. Route-aware color logic via `isHomeUnscrolled = usePathname() === "/" && !isScrolled`: the hardcoded-white treatment (for floating legibly over the Hero's dark video) only applies in that one case; every other route/state (including `/work`, `/work/[slug]`, and `/` once scrolled) uses theme-aware `text-foreground` tokens. **Fixed bug**: previously `/work` in light mode had invisible white-on-white nav text because the white styling wasn't route-gated. Section links (`/#services`, `/#process`, CTA `/#contact`) render via `SectionLink` so they work from any route; `/work` uses the client router; the `/#pricing` link was removed (no Pricing section exists). |
 | `section-link.tsx` | `SectionLink` | — | Anchor to a home section (`/#id`). On `/` it smooth-scrolls in place (preventDefault + `scrollIntoView` + `replaceState`); on other routes it does a normal full navigation to `/#id` and lets `HashScroll` land the scroll. Used by `navigation.tsx` (and available to footer/CTAs). |
 | `hash-scroll.tsx` | `HashScroll` | — | Client, renders null. On home mount, if the URL has a `#section`, scrolls to it with `behavior:"instant"` immediately + a few timed retries (native hash scroll is defeated by `scroll-behavior:smooth` + the tall page's load-time reflow). Rendered once in `app/page.tsx`. |
 | `hero-section.tsx` | `HeroSection` | — | Full-screen: eyebrow tag "(2016 — 2026)", giant static "Pioneering digital excellence." headline, right-shifted sub copy + CTA pill, stats row, background video (vercel-blob mp4), bottom scrolling marquee strip. |
+| `client-logos-section.tsx` | `ClientLogosSection` | — | "Trusted by" eyebrow + a continuously auto-scrolling marquee (CSS keyframe, same technique as `cta-marquee.tsx`) of ~8 made-up client wordmarks rendered as text logotypes (`font-display`, reduced opacity) — no image logo assets exist. Sits right after Hero as immediate social proof. |
 | `about-section.tsx` | `AboutSection` | — | Two-column: heading/copy + achievement rows with big numerals (left); autoplay muted looping studio-reel `<video>` with placeholder poster (right, sticky). "See the work" → `#work`. |
 | `cta-marquee.tsx` | `CtaMarquee` | — | Reusable band: scrolling "Let's build something great" display-text marquee + centered "Start a project" pill → `#contact`. Rendered twice on the home page, each call passing `variant="a"|"b"` to alternate its `bg-section`/`bg-section-2`. |
 | `services-section.tsx` | `ServicesSection` | `services` | "Scope of work." — 4 stacked full-width rows: number, 2-line display title, description, `+ capability` list, right-aligned stat. |
 | `process-section.tsx` | `ProcessSection` | `process` | "Solution in process." — 3 giant step rows (Step 01–03) + founder quote block (Alex Morgan placeholder), on the alternating `bg-section`/`bg-section-2` background (text uses `text-foreground` variants, not hardcoded white, so it stays readable in light mode). |
 | `featured-work-section.tsx` | `FeaturedWorkSection` | `work` | "Selected projects / (2023 — 2026)* / Latest work." — first 4 `featured` items from `lib/data/work.ts` via shared `WorkCard` in a 2-col grid; centered "View all work" pill → `/work`. Only landing section with an external data source. |
-| `testimonials-section.tsx` | `TestimonialsSection` | — | "They love us." + 5-star REVIEWED badge; static 2×2 grid of review cards (avatar initial, name/role, bold headline, quote). |
-| `articles-section.tsx` | `ArticlesSection` | — | "Latest articles." — 4 static journal rows (category chip, mono date, display title). Deliberately non-clickable: no blog exists, no dead links. |
-| `pricing-section.tsx` | `PricingSection` | `pricing` | 3 engagement models: Starter $2,400/mo, Growth $5,500/mo (most popular), Enterprise custom. Kept through the redesign so the nav's `#pricing` anchor resolves. |
+| `team-section.tsx` | `TeamSection` | — | "The team." — intro copy + a grid of ~5 made-up team members (name, role, one-line bio, initials-circle avatar reusing the testimonials avatar treatment, sized up). Sits between Services and the second `CtaMarquee`. |
+| `testimonials-section.tsx` | `TestimonialsSection` | — | "They love us." + 5-star REVIEWED badge; auto-playing carousel (shadcn `components/ui/carousel.tsx` + `embla-carousel-autoplay`, 4s delay, pauses on hover) of 8 review cards (avatar initial, name/role, bold headline, quote) — `lg:basis-1/3` (3-up desktop), `sm:basis-1/2` (2-up tablet), `basis-full` (1-up mobile). No longer a static 2×2 grid. `CarouselPrevious`/`CarouselNext` de-rounded (`rounded-none`) to match the site's sharp-corner convention. |
 | `contact-section.tsx` | `ContactSection` | `contact` | Repeated-word "Contact" marquee strip + contact form (name/email/message) — react-hook-form + zod schema (`contactFormSchema`) + shadcn Form/Input/Textarea/Button. No API call: valid submit fires a sonner toast and resets. |
-| `footer-section.tsx` | `FooterSection` | — | 4 link columns (Services/Company/Resources/Legal) + socials. Section links are root-relative (`/#services`, `/#process`, `/#pricing`) so they resolve from `/work` too; several other links are `href="#"` placeholders (Careers, FAQ, Blog, Privacy, Terms, socials). |
+| `footer-section.tsx` | `FooterSection` | — | 4 link columns (Services/Company/Resources/Legal) + socials. Section links are root-relative (`/#services`, `/#process`) so they resolve from `/work` too; several other links are `href="#"` placeholders (Careers, FAQ, Privacy, Terms, socials). No Pricing or Blog entries — both removed (no package tiers, no blog). |
 | `ascii-scene.tsx` | `AsciiScene` | — | ⚠️ **Dead code.** R3F/three 3D scene, no longer imported anywhere since the COMPUTE sections were deleted. Delete it (and check if `@react-three/fiber`/`three` deps become removable) or repurpose deliberately. |
 
 `metrics-section.tsx` was deleted in the Mortar-layout redesign — its stats moved into Hero/About.
@@ -67,7 +69,7 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 
 | File | Contents |
 |---|---|
-| `work-card.tsx` | `WorkCard({ item: WorkItem })` — the ONE shared card for both FeaturedWorkSection and `/work` (rule: never fork a second). `next/link` to `/work/[slug]`. 4:3 cover `<img>` (real image from `/images/`) with a `.corner-notch` bite out of the top-right corner; a white circular `+` badge nests in the gap and, on hover, a "View details" pill scales out to its left (`+` rotates 90°). Below: `bg-card` panel with display title, muted summary, bordered uppercase category pill. |
+| `work-card.tsx` | `WorkCard({ item: WorkItem })` — the ONE shared card for both FeaturedWorkSection and `/work` (rule: never fork a second). `next/link` to `/work/[slug]`. **16:9** cover `<img>` (`aspect-16/9`, changed from the original `aspect-4/3` — user request; `object-cover` crops the existing cover images, which weren't authored at 16:9, to fit) with a `.corner-notch` bite out of the top-right corner; a white circular `+` badge nests in the gap and, on hover, a "View details" pill scales out to its left (`+` rotates 90°). Below: `bg-card` panel with display title, muted summary, bordered uppercase category pill. |
 
 ## components/ui/
 
@@ -84,7 +86,7 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 
 ## public/
 
-`placeholder.jpg`/`placeholder-logo.*`/`placeholder-user.jpg` (generic placeholders), favicon set (`icon.svg`, `icon-{light,dark}-32x32.png`, `apple-icon.png`), and `images/` — repurposed COMPUTE-era 3D art now used as work-card / detail covers (`audit`, `bridge`, `encrypted`, `isolated`, `permissions`, `shield`, `whale`, mapped per project in `lib/data/work.ts`); `whale.png` also backs the pricing-section.
+`placeholder.jpg`/`placeholder-logo.*`/`placeholder-user.jpg` (generic placeholders), favicon set (`icon.svg`, `icon-{light,dark}-32x32.png`, `apple-icon.png`), and `images/` — repurposed COMPUTE-era 3D art now used as work-card / detail covers (`audit`, `bridge`, `encrypted`, `isolated`, `permissions`, `shield`, `whale`, mapped per project in `lib/data/work.ts`).
 
 ## Testing
 

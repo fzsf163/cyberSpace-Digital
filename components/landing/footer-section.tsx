@@ -13,14 +13,12 @@ const footerLinks = {
   Company: [
     { name: "Work", href: "/work" },
     { name: "Process", href: "/#process" },
-    { name: "Pricing", href: "/#pricing" },
     { name: "Careers", href: "#", badge: "Hiring" },
   ],
   Resources: [
     { name: "Case studies", href: "/work" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "FAQ", href: "#" },
-    { name: "Blog", href: "#" },
   ],
   Legal: [
     { name: "Privacy", href: "#" },

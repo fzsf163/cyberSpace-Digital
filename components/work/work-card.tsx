@@ -8,7 +8,7 @@ export function WorkCard({ item }: { item: WorkItem }) {
     <Link href={`/work/${item.slug}`} className="group block">
       {/* Cover with a notch cut out of the top-right corner */}
       <div className="relative">
-        <div className="corner-notch relative aspect-4/3 overflow-hidden rounded-t-[20px]">
+        <div className="corner-notch relative aspect-16/9 overflow-hidden rounded-t-[20px]">
           <img
             src={item.coverImage}
             alt={item.title}
