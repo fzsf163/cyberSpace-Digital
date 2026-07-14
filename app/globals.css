@@ -4,6 +4,44 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --background: oklch(0.98 0.003 90);
+  --foreground: oklch(0.17 0.01 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.17 0.01 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.17 0.01 260);
+  --primary: oklch(0.17 0.01 260);
+  --primary-foreground: oklch(0.98 0.003 90);
+  --secondary: oklch(0.94 0.004 90);
+  --secondary-foreground: oklch(0.17 0.01 260);
+  --muted: oklch(0.94 0.004 90);
+  --muted-foreground: oklch(0.48 0.012 260);
+  --accent: oklch(0.92 0.006 90);
+  --accent-foreground: oklch(0.17 0.01 260);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0.003 90);
+  --border: oklch(0.88 0.006 90);
+  --input: oklch(0.91 0.006 90);
+  --ring: oklch(0.17 0.01 260);
+  --chart-1: oklch(0.17 0.01 260);
+  --chart-2: oklch(0.35 0.01 90);
+  --chart-3: oklch(0.52 0.015 90);
+  --chart-4: oklch(0.72 0.01 90);
+  --chart-5: oklch(0.85 0.008 90);
+  --radius: 0.25rem;
+  --section: oklch(0.97 0.004 90);
+  --section-2: oklch(0.93 0.004 90);
+  --sidebar: oklch(0.98 0.003 90);
+  --sidebar-foreground: oklch(0.17 0.01 260);
+  --sidebar-primary: oklch(0.17 0.01 260);
+  --sidebar-primary-foreground: oklch(0.98 0.003 90);
+  --sidebar-accent: oklch(0.94 0.004 90);
+  --sidebar-accent-foreground: oklch(0.17 0.01 260);
+  --sidebar-border: oklch(0.88 0.006 90);
+  --sidebar-ring: oklch(0.48 0.012 260);
+}
+
+.dark {
   --background: oklch(0.06 0.008 260);
   --foreground: oklch(0.94 0.005 90);
   --card: oklch(0.09 0.008 260);
@@ -29,7 +67,8 @@
   --chart-4: oklch(0.35 0.01 90);
   --chart-5: oklch(0.20 0.008 90);
   --radius: 0.25rem;
-  --section: oklch(0.09 0.012 286);
+  --section: #37353e;
+  --section-2: #44444e;
   --sidebar: oklch(0.06 0.008 260);
   --sidebar-foreground: oklch(0.94 0.005 90);
   --sidebar-primary: oklch(0.94 0.005 90);
@@ -47,6 +86,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-section: var(--section);
+  --color-section-2: var(--section-2);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -180,10 +220,6 @@
     z-index: 1;
   }
   
-  .how-it-works-bg {
-    background-color: oklch(0.10 0.008 260);
-  }
-
   /* Concave rounded notch cut out of the top-right corner, so a circular
      button can nest into the gap. Pair with rounded-t-* + overflow-hidden. */
   .corner-notch {
