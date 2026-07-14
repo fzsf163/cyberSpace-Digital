@@ -51,7 +51,7 @@ export function TestimonialsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32">
+    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-section-2">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-8 mb-16 lg:mb-20">

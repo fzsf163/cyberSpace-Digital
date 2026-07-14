@@ -92,7 +92,7 @@ function AnimatedWaveCanvas() {
 
 export function FooterSection() {
   return (
-    <footer className="relative bg-black">
+    <footer className="relative bg-section-2">
       {/* Panoramic banner image */}
       <div className="relative w-full h-[340px] md:h-[420px] overflow-hidden">
         <img
@@ -106,7 +106,7 @@ export function FooterSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
       </div>
 
-      {/* Footer content — black background, white text */}
+      {/* Footer content */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Main Footer */}
         <div className="py-16 lg:py-20">
@@ -114,11 +114,11 @@ export function FooterSection() {
             {/* Brand Column */}
             <div className="col-span-2">
               <a href="#" className="inline-flex items-center gap-2 mb-6">
-                <span className="text-2xl font-display text-white">CyberSpace</span>
-                <span className="text-xs text-white/40 font-mono">DIGITAL</span>
+                <span className="text-2xl font-display text-foreground">CyberSpace</span>
+                <span className="text-xs text-foreground/40 font-mono">DIGITAL</span>
               </a>
 
-              <p className="text-white/50 leading-relaxed mb-8 max-w-xs text-sm">
+              <p className="text-foreground/50 leading-relaxed mb-8 max-w-xs text-sm">
                 CyberSpace Digital is a full-service digital agency for brand, web, product, and growth.
               </p>
 
@@ -128,7 +128,7 @@ export function FooterSection() {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1 group"
+                    className="text-sm text-foreground/40 hover:text-foreground transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -140,13 +140,13 @@ export function FooterSection() {
             {/* Link Columns */}
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
-                <h3 className="text-sm font-medium text-white mb-6">{title}</h3>
+                <h3 className="text-sm font-medium text-foreground mb-6">{title}</h3>
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
                       <a
                         href={link.href}
-                        className="text-sm text-white/40 hover:text-white transition-colors inline-flex items-center gap-2"
+                        className="text-sm text-foreground/40 hover:text-foreground transition-colors inline-flex items-center gap-2"
                       >
                         {link.name}
                         {"badge" in link && link.badge && (
@@ -164,12 +164,12 @@ export function FooterSection() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/30">
+        <div className="py-8 border-t border-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-foreground/30">
             &copy; 2026 CyberSpace Digital. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-4 text-sm text-white/30">
+          <div className="flex items-center gap-4 text-sm text-foreground/30">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#eca8d6]" />
               Currently accepting new projects

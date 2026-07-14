@@ -43,24 +43,24 @@ export function ProcessSection() {
   }, []);
 
   return (
-    <section id="process" ref={sectionRef} className="relative py-24 lg:py-32 bg-[oklch(0.09_0.01_260)]">
+    <section id="process" ref={sectionRef} className="relative py-24 lg:py-32 bg-section">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="mb-16 lg:mb-24">
           <span
-            className={`inline-flex items-center gap-3 text-sm font-mono text-white/40 mb-6 transition-all duration-700 ${
+            className={`inline-flex items-center gap-3 text-sm font-mono text-foreground/40 mb-6 transition-all duration-700 ${
               isVisible ? "opacity-100" : "opacity-0"
             }`}
           >
-            <span className="w-12 h-px bg-white/20" />
+            <span className="w-12 h-px bg-foreground/20" />
             Working steps
           </span>
           <h2
-            className={`text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] text-white transition-all duration-1000 ${
+            className={`text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] text-foreground transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Solution in <span className="text-white/30">process.</span>
+            Solution in <span className="text-foreground/30">process.</span>
           </h2>
         </div>
 
@@ -69,25 +69,25 @@ export function ProcessSection() {
           {steps.map((step, index) => (
             <div
               key={step.number}
-              className={`group grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-10 lg:py-14 border-t border-white/10 last:border-b transition-all duration-700 ${
+              className={`group grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-10 lg:py-14 border-t border-foreground/10 last:border-b transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 120}ms` }}
             >
               <div className="lg:col-span-2 flex items-baseline gap-3">
-                <span className="text-sm font-mono text-white/40 uppercase tracking-widest">
+                <span className="text-sm font-mono text-foreground/40 uppercase tracking-widest">
                   Step
                 </span>
-                <span className="text-5xl lg:text-6xl font-display text-white/20 group-hover:text-white/60 transition-colors duration-500">
+                <span className="text-5xl lg:text-6xl font-display text-foreground/20 group-hover:text-foreground/60 transition-colors duration-500">
                   {step.number}
                 </span>
               </div>
-              <h3 className="lg:col-span-6 text-4xl lg:text-6xl font-display text-white leading-[1.02] transition-transform duration-500 group-hover:translate-x-2">
+              <h3 className="lg:col-span-6 text-4xl lg:text-6xl font-display text-foreground leading-[1.02] transition-transform duration-500 group-hover:translate-x-2">
                 {step.title}
                 <br />
-                <span className="text-white/40">{step.subtitle}</span>
+                <span className="text-foreground/40">{step.subtitle}</span>
               </h3>
-              <p className="lg:col-span-4 text-white/60 leading-relaxed">
+              <p className="lg:col-span-4 text-foreground/60 leading-relaxed">
                 {step.description}
               </p>
             </div>
@@ -100,18 +100,18 @@ export function ProcessSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <p className="text-2xl lg:text-3xl font-display text-white/80 leading-snug mb-8">
+          <p className="text-2xl lg:text-3xl font-display text-foreground/80 leading-snug mb-8">
             &ldquo;Every engagement runs through the same senior team, start to
             finish — that&apos;s how the work stays sharp from brief to
             launch.&rdquo;
           </p>
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
-              <span className="font-display text-xl text-white">A</span>
+            <div className="w-14 h-14 rounded-full bg-foreground/10 flex items-center justify-center">
+              <span className="font-display text-xl text-foreground">A</span>
             </div>
             <div>
-              <p className="text-white font-medium">Alex Morgan</p>
-              <p className="text-white/50 text-sm">
+              <p className="text-foreground font-medium">Alex Morgan</p>
+              <p className="text-foreground/50 text-sm">
                 Founder &amp; Creative Director, CyberSpace Digital
               </p>
             </div>

@@ -3,12 +3,18 @@
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const phrase = "Let's build something great";
 
-export function CtaMarquee() {
+export function CtaMarquee({ variant = "a" }: { variant?: "a" | "b" }) {
   return (
-    <section className="relative py-16 lg:py-20 border-y border-foreground/10 overflow-hidden">
+    <section
+      className={cn(
+        "relative py-16 lg:py-20 border-y border-foreground/10 overflow-hidden",
+        variant === "a" ? "bg-section" : "bg-section-2"
+      )}
+    >
       {/* Scrolling phrase */}
       <div className="flex w-max animate-cta-marquee mb-10" aria-hidden="true">
         {[0, 1].map((half) => (

@@ -2,7 +2,7 @@
 
 Orientation file: what lives where and what each file contains, so you don't have to re-explore the tree every session. **Keep this updated** — when you add, rename, delete, or repurpose a file, update the matching line here in the same change.
 
-Last synced: 2026-07-14 (Mortar-layout home redesign, branch `feat/mortar-dark-home`).
+Last synced: 2026-07-15 (light/dark mode + alternating section backgrounds, branch `feat/work-detail-cards-nav`).
 
 ## Top-level layout
 
@@ -26,11 +26,18 @@ Docs at root: [README.md](../README.md) (public-facing documentation — pages, 
 
 | File | Contents |
 |---|---|
-| `layout.tsx` | Root layout. Loads the 3 fonts as CSS variables (`--font-instrument` Sans / `--font-instrument-serif` / `--font-jetbrains` Mono), site metadata ("CyberSpace Digital — Brand, Web & Product Agency"), Vercel `<Analytics />`, sonner `<Toaster />`. |
-| `page.tsx` | Home (`/`). Pure composition — renders `HashScroll` then stacks the landing sections in order: Navigation → Hero → About → CtaMarquee → FeaturedWork → Services → CtaMarquee → Process → Testimonials → Articles → Pricing → Contact → Footer. `<main>` carries `bg-section` so every section except Hero and Footer (both `bg-black`) sits on the raised section background. |
-| `work/page.tsx` | `/work`. Own `metadata`, "Selected projects / (2023 — 2026)* / All work." header, 2-col grid of ALL `workItems` via `WorkCard`, wrapped in shared Navigation + FooterSection. `<main>` uses `bg-section`. |
-| `work/[slug]/page.tsx` | `/work/[slug]` project detail page (SSG via `generateStaticParams` over `workItems`; `generateMetadata`; `notFound()` on bad slug). Breadcrumb, title + discipline tags, 16:9 banner, meta bar (industry/client/solution/year/website), Project summary (client needs + approach) / Challenges / Results body with a sticky "Services provided" aside, and prev/next project nav (wraps). Optional `WorkItem` detail fields fall back to defaults. `bg-section`. |
-| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, dark oklch tokens on `:root` (`--background`, `--foreground`, `--section` raised section bg, `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. Utilities include `.corner-notch` (radial-gradient mask cutting a concave circle out of a card's top-right corner). The only styling config file — there is no tailwind.config. |
+| `layout.tsx` | Root layout. Loads the 3 fonts as CSS variables (`--font-instrument` Sans / `--font-instrument-serif` / `--font-jetbrains` Mono), site metadata ("CyberSpace Digital — Brand, Web & Product Agency"), wraps `{children}` in `ThemeProvider` (`attribute="class"`, `defaultTheme="dark"`, `next-themes`) alongside `<ThemeToggle />`, Vercel `<Analytics />`, sonner `<Toaster />`. `<html>` carries `suppressHydrationWarning` (required by next-themes). |
+| `page.tsx` | Home (`/`). Pure composition — renders `HashScroll` then stacks the landing sections in order: Navigation → Hero → About → CtaMarquee → FeaturedWork → Services → CtaMarquee → Process → Testimonials → Articles → Pricing → Contact → Footer. Each section now owns its own alternating `bg-section` / `bg-section-2` background directly (no flat bg on `<main>`) — see `docs/design.md` for the exact alternation order; `Navigation` is the only piece excluded from it. |
+| `work/page.tsx` | `/work`. Own `metadata`, "Selected projects / (2023 — 2026)* / All work." header, 2-col grid of ALL `workItems` via `WorkCard`, wrapped in shared Navigation + FooterSection. `<main>` uses a flat `bg-section` (single page, not alternating stacked sections). |
+| `work/[slug]/page.tsx` | `/work/[slug]` project detail page (SSG via `generateStaticParams` over `workItems`; `generateMetadata`; `notFound()` on bad slug). Breadcrumb, title + discipline tags, 16:9 banner, meta bar (industry/client/solution/year/website), Project summary (client needs + approach) / Challenges / Results body with a sticky "Services provided" aside, and prev/next project nav (wraps). Optional `WorkItem` detail fields fall back to defaults. Flat `bg-section`. |
+| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, `:root` (light) + `.dark` (dark) token blocks (`--background`, `--foreground`, `--section`/`--section-2` alternating section-bg pair — dark values are literal hex `#37353e`/`#44444e`, light values are oklch — `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. Utilities include `.corner-notch` (radial-gradient mask cutting a concave circle out of a card's top-right corner). The only styling config file — there is no tailwind.config. |
+
+## components/ (top-level)
+
+| File | Contents |
+|---|---|
+| `theme-provider.tsx` | Thin `next-themes` `ThemeProvider` wrapper (`"use client"`). Mounted once in `app/layout.tsx`. |
+| `theme-toggle.tsx` | `ThemeToggle` — fixed right-edge half-capsule with a shadcn `Switch` (rotated vertical) between `Sun`/`Moon` icons; calls `useTheme()` to flip `light`/`dark`. Mounted once in `app/layout.tsx`, shows on every route. |
 
 ## components/landing/
 
@@ -43,9 +50,9 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 | `hash-scroll.tsx` | `HashScroll` | — | Client, renders null. On home mount, if the URL has a `#section`, scrolls to it with `behavior:"instant"` immediately + a few timed retries (native hash scroll is defeated by `scroll-behavior:smooth` + the tall page's load-time reflow). Rendered once in `app/page.tsx`. |
 | `hero-section.tsx` | `HeroSection` | — | Full-screen: eyebrow tag "(2016 — 2026)", giant static "Pioneering digital excellence." headline, right-shifted sub copy + CTA pill, stats row, background video (vercel-blob mp4), bottom scrolling marquee strip. |
 | `about-section.tsx` | `AboutSection` | — | Two-column: heading/copy + achievement rows with big numerals (left); autoplay muted looping studio-reel `<video>` with placeholder poster (right, sticky). "See the work" → `#work`. |
-| `cta-marquee.tsx` | `CtaMarquee` | — | Reusable band: scrolling "Let's build something great" display-text marquee + centered "Start a project" pill → `#contact`. Rendered twice on the home page. |
+| `cta-marquee.tsx` | `CtaMarquee` | — | Reusable band: scrolling "Let's build something great" display-text marquee + centered "Start a project" pill → `#contact`. Rendered twice on the home page, each call passing `variant="a"|"b"` to alternate its `bg-section`/`bg-section-2`. |
 | `services-section.tsx` | `ServicesSection` | `services` | "Scope of work." — 4 stacked full-width rows: number, 2-line display title, description, `+ capability` list, right-aligned stat. |
-| `process-section.tsx` | `ProcessSection` | `process` | "Solution in process." — 3 giant step rows (Step 01–03) on the raised dark bg + founder quote block (Alex Morgan placeholder). |
+| `process-section.tsx` | `ProcessSection` | `process` | "Solution in process." — 3 giant step rows (Step 01–03) + founder quote block (Alex Morgan placeholder), on the alternating `bg-section`/`bg-section-2` background (text uses `text-foreground` variants, not hardcoded white, so it stays readable in light mode). |
 | `featured-work-section.tsx` | `FeaturedWorkSection` | `work` | "Selected projects / (2023 — 2026)* / Latest work." — first 4 `featured` items from `lib/data/work.ts` via shared `WorkCard` in a 2-col grid; centered "View all work" pill → `/work`. Only landing section with an external data source. |
 | `testimonials-section.tsx` | `TestimonialsSection` | — | "They love us." + 5-star REVIEWED badge; static 2×2 grid of review cards (avatar initial, name/role, bold headline, quote). |
 | `articles-section.tsx` | `ArticlesSection` | — | "Latest articles." — 4 static journal rows (category chip, mono date, display title). Deliberately non-clickable: no blog exists, no dead links. |

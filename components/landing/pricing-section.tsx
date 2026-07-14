@@ -71,7 +71,7 @@ export function PricingSection() {
   }, []);
 
   return (
-    <section id="pricing" ref={sectionRef} className="relative py-32 lg:py-40">
+    <section id="pricing" ref={sectionRef} className="relative py-32 lg:py-40 bg-section-2">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header - Dramatic offset */}
         <div className="grid lg:grid-cols-12 gap-8 mb-20">

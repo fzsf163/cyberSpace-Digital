@@ -24,3 +24,6 @@ node_modules
 reports/
 
 *.tsbuildinfo
+
+# claude plan
+plan.md
