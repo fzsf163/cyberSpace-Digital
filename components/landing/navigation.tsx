@@ -5,10 +5,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
+import { SectionLink } from "@/components/landing/section-link";
+
+// Section links are root-relative (`/#id`) so they work from any route —
+// on /work or /work/[slug] they route home and scroll, not to a dead anchor.
 const navLinks = [
-  { name: "Services", href: "#services" },
-  { name: "Process", href: "#process" },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Services", href: "/#services" },
+  { name: "Process", href: "/#process" },
+  { name: "Pricing", href: "/#pricing" },
   { name: "Work", href: "/work" },
 ];
 
@@ -25,6 +29,17 @@ function NavLink({
   onClick?: () => void;
   children: React.ReactNode;
 }) {
+  // Section anchors (`/#id`) go through SectionLink (smooth-scroll on home,
+  // full-navigate from other routes). Real route links (`/work`) use the
+  // client router.
+  if (href.includes("#")) {
+    return (
+      <SectionLink href={href} className={className} style={style} onClick={onClick}>
+        {children}
+      </SectionLink>
+    );
+  }
+
   if (href.startsWith("/")) {
     return (
       <Link href={href} className={className} style={style} onClick={onClick}>
@@ -99,7 +114,7 @@ export function Navigation() {
               size="sm"
               className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-foreground hover:bg-foreground/90 text-background px-4 h-8 text-xs" : "bg-white hover:bg-white/90 text-black px-6"}`}
             >
-              <a href="#contact">Start a project</a>
+              <SectionLink href="/#contact">Start a project</SectionLink>
             </Button>
           </div>
 
@@ -160,9 +175,9 @@ export function Navigation() {
               asChild
               className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
             >
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
+              <SectionLink href="/#contact" onClick={() => setIsMobileMenuOpen(false)}>
                 Start a project
-              </a>
+              </SectionLink>
             </Button>
           </div>
         </div>

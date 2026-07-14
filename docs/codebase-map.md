@@ -27,9 +27,10 @@ Docs at root: [README.md](../README.md) (public-facing documentation — pages, 
 | File | Contents |
 |---|---|
 | `layout.tsx` | Root layout. Loads the 3 fonts as CSS variables (`--font-instrument` Sans / `--font-instrument-serif` / `--font-jetbrains` Mono), site metadata ("CyberSpace Digital — Brand, Web & Product Agency"), Vercel `<Analytics />`, sonner `<Toaster />`. |
-| `page.tsx` | Home (`/`). Pure composition — stacks the landing sections in order: Navigation → Hero → About → CtaMarquee → FeaturedWork → Services → CtaMarquee → Process → Testimonials → Articles → Pricing → Contact → Footer. |
-| `work/page.tsx` | `/work`. Own `metadata`, "Selected projects / (2023 — 2026)* / All work." header, 2-col grid of ALL `workItems` via `WorkCard`, wrapped in shared Navigation + FooterSection. |
-| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, dark oklch tokens on `:root` (`--background`, `--foreground`, `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. The only styling config file — there is no tailwind.config. |
+| `page.tsx` | Home (`/`). Pure composition — renders `HashScroll` then stacks the landing sections in order: Navigation → Hero → About → CtaMarquee → FeaturedWork → Services → CtaMarquee → Process → Testimonials → Articles → Pricing → Contact → Footer. `<main>` carries `bg-section` so every section except Hero and Footer (both `bg-black`) sits on the raised section background. |
+| `work/page.tsx` | `/work`. Own `metadata`, "Selected projects / (2023 — 2026)* / All work." header, 2-col grid of ALL `workItems` via `WorkCard`, wrapped in shared Navigation + FooterSection. `<main>` uses `bg-section`. |
+| `work/[slug]/page.tsx` | `/work/[slug]` project detail page (SSG via `generateStaticParams` over `workItems`; `generateMetadata`; `notFound()` on bad slug). Breadcrumb, title + discipline tags, 16:9 banner, meta bar (industry/client/solution/year/website), Project summary (client needs + approach) / Challenges / Results body with a sticky "Services provided" aside, and prev/next project nav (wraps). Optional `WorkItem` detail fields fall back to defaults. `bg-section`. |
+| `globals.css` | Tailwind v4 CSS-first config: `@import 'tailwindcss'`, dark oklch tokens on `:root` (`--background`, `--foreground`, `--section` raised section bg, `--radius: 0.25rem`, chart/sidebar vars), `@custom-variant dark`. Utilities include `.corner-notch` (radial-gradient mask cutting a concave circle out of a card's top-right corner). The only styling config file — there is no tailwind.config. |
 
 ## components/landing/
 
@@ -37,7 +38,9 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 
 | File | Export | Anchor | Contents |
 |---|---|---|---|
-| `navigation.tsx` | `Navigation` | — | Sticky nav. Links: `#services`, `#process`, `#pricing`, `/work`; primary CTA "Start a project" → `#contact`. |
+| `navigation.tsx` | `Navigation` | — | Sticky nav. Section links (`/#services`, `/#process`, `/#pricing`, CTA `/#contact`) render via `SectionLink` so they work from any route; `/work` uses the client router. |
+| `section-link.tsx` | `SectionLink` | — | Anchor to a home section (`/#id`). On `/` it smooth-scrolls in place (preventDefault + `scrollIntoView` + `replaceState`); on other routes it does a normal full navigation to `/#id` and lets `HashScroll` land the scroll. Used by `navigation.tsx` (and available to footer/CTAs). |
+| `hash-scroll.tsx` | `HashScroll` | — | Client, renders null. On home mount, if the URL has a `#section`, scrolls to it with `behavior:"instant"` immediately + a few timed retries (native hash scroll is defeated by `scroll-behavior:smooth` + the tall page's load-time reflow). Rendered once in `app/page.tsx`. |
 | `hero-section.tsx` | `HeroSection` | — | Full-screen: eyebrow tag "(2016 — 2026)", giant static "Pioneering digital excellence." headline, right-shifted sub copy + CTA pill, stats row, background video (vercel-blob mp4), bottom scrolling marquee strip. |
 | `about-section.tsx` | `AboutSection` | — | Two-column: heading/copy + achievement rows with big numerals (left); autoplay muted looping studio-reel `<video>` with placeholder poster (right, sticky). "See the work" → `#work`. |
 | `cta-marquee.tsx` | `CtaMarquee` | — | Reusable band: scrolling "Let's build something great" display-text marquee + centered "Start a project" pill → `#contact`. Rendered twice on the home page. |
@@ -48,7 +51,7 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 | `articles-section.tsx` | `ArticlesSection` | — | "Latest articles." — 4 static journal rows (category chip, mono date, display title). Deliberately non-clickable: no blog exists, no dead links. |
 | `pricing-section.tsx` | `PricingSection` | `pricing` | 3 engagement models: Starter $2,400/mo, Growth $5,500/mo (most popular), Enterprise custom. Kept through the redesign so the nav's `#pricing` anchor resolves. |
 | `contact-section.tsx` | `ContactSection` | `contact` | Repeated-word "Contact" marquee strip + contact form (name/email/message) — react-hook-form + zod schema (`contactFormSchema`) + shadcn Form/Input/Textarea/Button. No API call: valid submit fires a sonner toast and resets. |
-| `footer-section.tsx` | `FooterSection` | — | 4 link columns (Services/Company/Resources/Legal) + socials. Several links are `href="#"` placeholders (Careers, FAQ, Blog, Privacy, Terms, socials). |
+| `footer-section.tsx` | `FooterSection` | — | 4 link columns (Services/Company/Resources/Legal) + socials. Section links are root-relative (`/#services`, `/#process`, `/#pricing`) so they resolve from `/work` too; several other links are `href="#"` placeholders (Careers, FAQ, Blog, Privacy, Terms, socials). |
 | `ascii-scene.tsx` | `AsciiScene` | — | ⚠️ **Dead code.** R3F/three 3D scene, no longer imported anywhere since the COMPUTE sections were deleted. Delete it (and check if `@react-three/fiber`/`three` deps become removable) or repurpose deliberately. |
 
 `metrics-section.tsx` was deleted in the Mortar-layout redesign — its stats moved into Hero/About.
@@ -57,7 +60,7 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 
 | File | Contents |
 |---|---|
-| `work-card.tsx` | `WorkCard({ item: WorkItem })` — the ONE shared card for both FeaturedWorkSection and `/work` (rule: never fork a second). 4:3 cover `<img>` with hover "View details" pill overlay (link variant only), display-size title (+ArrowUpRight if external link), bordered uppercase category chip, mono year/client row, summary. Renders as `<a target="_blank">` when `item.href` exists, plain `<div>` otherwise. |
+| `work-card.tsx` | `WorkCard({ item: WorkItem })` — the ONE shared card for both FeaturedWorkSection and `/work` (rule: never fork a second). `next/link` to `/work/[slug]`. 4:3 cover `<img>` (real image from `/images/`) with a `.corner-notch` bite out of the top-right corner; a white circular `+` badge nests in the gap and, on hover, a "View details" pill scales out to its left (`+` rotates 90°). Below: `bg-card` panel with display title, muted summary, bordered uppercase category pill. |
 
 ## components/ui/
 
@@ -68,13 +71,13 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 | File | Contents |
 |---|---|
 | `lib/utils.ts` | `cn()` — clsx + tailwind-merge. Used for all conditional classes. |
-| `lib/data/work.ts` | `WorkItem` type + `workItems: WorkItem[]` (8 placeholder projects, 4 `featured: true`, all `coverImage: "/placeholder.jpg"`, 2 with external `href`). Single source of truth for both work displays — shape documented in [content-structure.md](content-structure.md). |
+| `lib/data/work.ts` | `WorkItem` type + `workItems: WorkItem[]` (8 projects, 4 `featured: true`, `coverImage` from `/images/*`, 2 with external `href`) + optional detail-page fields (tags/industry/solution/website/needs/approach/services/challenge/results, all with fallbacks) + `getWorkItem(slug)` / `getAdjacentWork(slug)` helpers. Single source of truth for both work displays + `/work/[slug]` — shape documented in [content-structure.md](content-structure.md). |
 | `hooks/use-mobile.ts` | `useIsMobile()` — matchMedia < 768px. |
 | `hooks/use-toast.ts` | Legacy shadcn toast store hook — note the app actually uses **sonner** for toasts (contact form), not this. |
 
 ## public/
 
-`placeholder.jpg` (used by all work cards), `placeholder-logo.*`, `placeholder-user.jpg`, favicon set (`icon.svg`, `icon-{light,dark}-32x32.png`, `apple-icon.png`), and `images/` — leftover COMPUTE-era art. Of those, only `images/whale.png` is still referenced (pricing-section background); audit/bridge/encrypted/isolated/permissions/shield are unused and safe to delete.
+`placeholder.jpg`/`placeholder-logo.*`/`placeholder-user.jpg` (generic placeholders), favicon set (`icon.svg`, `icon-{light,dark}-32x32.png`, `apple-icon.png`), and `images/` — repurposed COMPUTE-era 3D art now used as work-card / detail covers (`audit`, `bridge`, `encrypted`, `isolated`, `permissions`, `shield`, `whale`, mapped per project in `lib/data/work.ts`); `whale.png` also backs the pricing-section.
 
 ## Testing
 
