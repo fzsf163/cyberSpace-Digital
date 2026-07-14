@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "motion-react": {
+      "source": "pedronauck/skills",
+      "sourceType": "github",
+      "skillPath": "skills/community/motion-react/SKILL.md",
+      "computedHash": "def581a9f41a0b6235ed5403bbba79dd3feb676ce38dd16acf72d7d1637936c4"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
