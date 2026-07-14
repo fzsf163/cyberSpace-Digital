@@ -85,44 +85,44 @@ function AnimatedWaveCanvas() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-full"
+    />
+  );
 }
 
 export function FooterSection() {
   return (
     <footer className="relative bg-section-2">
-      {/* Panoramic banner image */}
-      <div className="relative w-full h-[340px] md:h-[420px] overflow-hidden">
-        <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2810%29-UnDKstODkIENp5xqTYUEpt0Sm8tNOw.png"
-          alt="Bioluminescent landscape"
-          className="w-full h-full object-cover object-center"
-        />
-        {/* Gradient fade to black at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
-        {/* Subtle dark vignette on sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
-      </div>
-
       {/* Footer content */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="relative z-10 max-w-350 mx-auto px-6 lg:px-12">
         {/* Main Footer */}
         <div className="py-16 lg:py-20">
           <div className="grid grid-cols-2 md:grid-cols-6 gap-12 lg:gap-8">
             {/* Brand Column */}
             <div className="col-span-2">
-              <a href="#" className="inline-flex items-center gap-2 mb-6">
-                <span className="text-2xl font-display text-foreground">CyberSpace</span>
-                <span className="text-xs text-foreground/40 font-mono">DIGITAL</span>
+              <a
+                href="#"
+                className="inline-flex items-center gap-2 mb-6"
+              >
+                <span className="text-2xl font-display text-foreground">
+                  CyberSpace
+                </span>
+                <span className="text-xs text-foreground/40 font-mono">
+                  DIGITAL
+                </span>
               </a>
 
               <p className="text-foreground/50 leading-relaxed mb-8 max-w-xs text-sm">
-                CyberSpace Digital is a full-service digital agency for brand, web, product, and growth.
+                CyberSpace Digital is a full-service digital agency for brand,
+                web, product, and growth.
               </p>
 
               {/* Social Links */}
               <div className="flex gap-6">
-                {socialLinks.map((link) => (
+                {socialLinks.map(link => (
                   <a
                     key={link.name}
                     href={link.href}
@@ -138,9 +138,11 @@ export function FooterSection() {
             {/* Link Columns */}
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
-                <h3 className="text-sm font-medium text-foreground mb-6">{title}</h3>
+                <h3 className="text-sm font-medium text-foreground mb-6">
+                  {title}
+                </h3>
                 <ul className="space-y-4">
-                  {links.map((link) => (
+                  {links.map(link => (
                     <li key={link.name}>
                       <a
                         href={link.href}
