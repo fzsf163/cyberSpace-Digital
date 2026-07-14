@@ -11,38 +11,27 @@ const baseItem: WorkItem = {
   year: 2025,
   client: "Acme Health",
   summary: "A one-line summary of the test project.",
-  coverImage: "/placeholder.jpg",
+  coverImage: "/images/bridge.png",
 };
 
 describe("WorkCard", () => {
-  it("renders title, category, year, client and summary", () => {
+  it("renders title, category, summary and cover image", () => {
     render(<WorkCard item={baseItem} />);
 
     expect(screen.getByRole("heading", { name: "Test Project" })).toBeInTheDocument();
     // The category is rendered as-authored; the UI uppercases it with CSS
-    // (`uppercase` utility on the category chip), not by transforming the
-    // text itself.
+    // (`uppercase` utility on the category chip), not by transforming the text.
     const category = screen.getByText("Brand");
     expect(category).toBeInTheDocument();
     expect(category).toHaveClass("uppercase");
-    expect(screen.getByText("2025")).toBeInTheDocument();
-    expect(screen.getByText("Acme Health")).toBeInTheDocument();
     expect(screen.getByText("A one-line summary of the test project.")).toBeInTheDocument();
     expect(screen.getByAltText("Test Project")).toBeInTheDocument();
   });
 
-  it("renders an external link when item.href is set", () => {
-    render(<WorkCard item={{ ...baseItem, href: "https://example.com/case-study" }} />);
-
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "https://example.com/case-study");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
-  });
-
-  it("renders no link when item.href is absent", () => {
+  it("links to the project's detail page by slug", () => {
     render(<WorkCard item={baseItem} />);
 
-    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", "/work/test-project");
   });
 });
