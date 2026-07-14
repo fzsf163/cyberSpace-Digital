@@ -14,15 +14,15 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-section">
+    <main className="relative min-h-screen overflow-x-hidden">
       <HashScroll />
       <Navigation />
       <HeroSection />
       <AboutSection />
-      <CtaMarquee />
+      <CtaMarquee variant="a" />
       <FeaturedWorkSection />
       <ServicesSection />
-      <CtaMarquee />
+      <CtaMarquee variant="b" />
       <ProcessSection />
       <TestimonialsSection />
       <ArticlesSection />

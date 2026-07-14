@@ -44,7 +44,7 @@ export function ArticlesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32">
+    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-section">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="grid lg:grid-cols-12 gap-8 items-end mb-16 lg:mb-20">

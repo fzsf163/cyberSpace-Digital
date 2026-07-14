@@ -69,7 +69,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-section">
       {/* Repeated word strip */}
       <div className="overflow-hidden mb-12 lg:mb-16" aria-hidden="true">
         <div className="flex w-max animate-contact-marquee">
