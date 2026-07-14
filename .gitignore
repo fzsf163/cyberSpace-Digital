@@ -22,3 +22,5 @@ node_modules
 
 # Generated dev reports
 reports/
+
+*.tsbuildinfo

@@ -4,6 +4,7 @@ import { ContactSection } from "@/components/landing/contact-section";
 import { CtaMarquee } from "@/components/landing/cta-marquee";
 import { FeaturedWorkSection } from "@/components/landing/featured-work-section";
 import { FooterSection } from "@/components/landing/footer-section";
+import { HashScroll } from "@/components/landing/hash-scroll";
 import { HeroSection } from "@/components/landing/hero-section";
 import { Navigation } from "@/components/landing/navigation";
 import { PricingSection } from "@/components/landing/pricing-section";
@@ -13,7 +14,8 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden">
+    <main className="relative min-h-screen overflow-x-hidden bg-section">
+      <HashScroll />
       <Navigation />
       <HeroSection />
       <AboutSection />

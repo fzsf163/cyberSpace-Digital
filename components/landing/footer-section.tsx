@@ -5,15 +5,15 @@ import { useEffect, useRef } from "react";
 
 const footerLinks = {
   Services: [
-    { name: "Brand & Identity", href: "#services" },
-    { name: "Web Design & Development", href: "#services" },
-    { name: "Product Design", href: "#services" },
-    { name: "Growth & Marketing", href: "#services" },
+    { name: "Brand & Identity", href: "/#services" },
+    { name: "Web Design & Development", href: "/#services" },
+    { name: "Product Design", href: "/#services" },
+    { name: "Growth & Marketing", href: "/#services" },
   ],
   Company: [
     { name: "Work", href: "/work" },
-    { name: "Process", href: "#process" },
-    { name: "Pricing", href: "#pricing" },
+    { name: "Process", href: "/#process" },
+    { name: "Pricing", href: "/#pricing" },
     { name: "Careers", href: "#", badge: "Hiring" },
   ],
   Resources: [

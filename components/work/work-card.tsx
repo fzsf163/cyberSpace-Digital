@@ -1,64 +1,47 @@
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Plus } from "lucide-react";
 
 import type { WorkItem } from "@/lib/data/work";
-import { cn } from "@/lib/utils";
 
 export function WorkCard({ item }: { item: WorkItem }) {
-  const content = (
-    <>
-      {/* Cover with hover reveal */}
-      <div className="relative aspect-4/3 overflow-hidden border border-foreground/10">
-        <img
-          src={item.coverImage}
-          alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        {item.href && (
-          <span className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-sm font-medium">
-              View details
-              <ArrowUpRight className="w-4 h-4" />
-            </span>
+  return (
+    <Link href={`/work/${item.slug}`} className="group block">
+      {/* Cover with a notch cut out of the top-right corner */}
+      <div className="relative">
+        <div className="corner-notch relative aspect-4/3 overflow-hidden rounded-t-[20px]">
+          <img
+            src={item.coverImage}
+            alt={item.title}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
+
+        {/* Nested into the notch: white + badge with a "View details" pill
+            that expands to the left on hover. Sits outside the clipped cover
+            so the pill isn't cropped. */}
+        <div className="absolute right-2 top-2 z-10 flex items-center gap-2">
+          <span className="flex origin-right scale-x-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-[oklch(0.18_0.01_286)] px-4 py-2 font-mono text-xs uppercase tracking-widest text-foreground opacity-0 transition-all duration-500 group-hover:scale-x-100 group-hover:opacity-100">
+            View details
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </span>
-        )}
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black transition-transform duration-500 group-hover:rotate-90">
+            <Plus className="h-5 w-5" />
+          </span>
+        </div>
       </div>
 
       {/* Meta */}
-      <div className="pt-6">
-        <div className="flex items-center justify-between gap-4 mb-3">
-          <h3 className="text-2xl lg:text-3xl font-display flex items-center gap-2 transition-transform duration-500 group-hover:translate-x-1">
-            {item.title}
-            {item.href && (
-              <ArrowUpRight className="w-5 h-5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-            )}
-          </h3>
-          <span className="px-3 py-1 border border-foreground/20 font-mono text-xs text-muted-foreground uppercase tracking-widest whitespace-nowrap">
-            {item.category}
-          </span>
-        </div>
-        <div className="flex items-center gap-3 font-mono text-xs text-muted-foreground mb-3">
-          <span>{item.year}</span>
-          {item.client && (
-            <>
-              <span className="text-foreground/20">/</span>
-              <span>{item.client}</span>
-            </>
-          )}
-        </div>
-        <p className="text-sm text-muted-foreground leading-relaxed">{item.summary}</p>
+      <div className="rounded-b-[20px] border border-t-0 border-foreground/10 bg-card px-7 pb-8 pt-6">
+        <h3 className="font-display text-2xl transition-transform duration-500 group-hover:translate-x-1 lg:text-3xl">
+          {item.title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          {item.summary}
+        </p>
+        <span className="mt-5 inline-block rounded-full border border-foreground/15 px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          {item.category}
+        </span>
       </div>
-    </>
+    </Link>
   );
-
-  const className = cn("group relative flex flex-col");
-
-  if (item.href) {
-    return (
-      <a href={item.href} target="_blank" rel="noopener noreferrer" className={className}>
-        {content}
-      </a>
-    );
-  }
-
-  return <div className={className}>{content}</div>;
 }
