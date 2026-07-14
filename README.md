@@ -8,10 +8,15 @@ Marketing site for CyberSpace Digital, a full-service digital agency (brand, web
 
 | Route | Contents |
 |---|---|
-| `/` | Hero → Services → Process → Featured Work → Metrics → Testimonials → Pricing → Contact |
+| `/` | Navigation → Hero → Client logos (auto-scroll) → About → CTA marquee → Featured Work → Services → Team → CTA marquee → Process → Testimonials (carousel) → Contact → Footer |
 | `/work` | Full portfolio grid — all projects from the shared data source |
+| `/work/[slug]` | Individual project detail page |
+
+There is no pricing/package-tier section and no blog — both were deliberately removed; don't re-add a `#pricing` link or blog references.
 
 The contact form validates client-side (react-hook-form + zod) and shows a success toast; there is intentionally no backend or API route.
+
+The floating nav pill (`components/landing/navigation.tsx`) and the right-edge theme toggle (`components/theme-toggle.tsx`, tap button with an animated Sun/Moon swap) are both mounted site-wide and work identically on every route/theme combination.
 
 ## Getting started
 

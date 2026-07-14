@@ -1,9 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import { SectionLink } from "@/components/landing/section-link";
 
@@ -12,7 +13,6 @@ import { SectionLink } from "@/components/landing/section-link";
 const navLinks = [
   { name: "Services", href: "/#services" },
   { name: "Process", href: "/#process" },
-  { name: "Pricing", href: "/#pricing" },
   { name: "Work", href: "/work" },
 ];
 
@@ -34,12 +34,7 @@ function NavLink({
   // client router.
   if (href.includes("#")) {
     return (
-      <SectionLink
-        href={href}
-        className={className}
-        style={style}
-        onClick={onClick}
-      >
+      <SectionLink href={href} className={className} style={style} onClick={onClick}>
         {children}
       </SectionLink>
     );
@@ -47,24 +42,14 @@ function NavLink({
 
   if (href.startsWith("/")) {
     return (
-      <Link
-        href={href}
-        className={className}
-        style={style}
-        onClick={onClick}
-      >
+      <Link href={href} className={className} style={style} onClick={onClick}>
         {children}
       </Link>
     );
   }
 
   return (
-    <a
-      href={href}
-      className={className}
-      style={style}
-      onClick={onClick}
-    >
+    <a href={href} className={className} style={style} onClick={onClick}>
       {children}
     </a>
   );
@@ -73,6 +58,14 @@ function NavLink({
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // The hardcoded-white "floating over dark hero" treatment only applies on
+  // the home page before scrolling — that's the only place a dark video
+  // backdrop sits directly behind the nav. Every other route/state (including
+  // /work, /work/[slug], and the home page once scrolled) uses theme-aware
+  // tokens so the nav stays legible in both light and dark mode.
+  const isHomeUnscrolled = pathname === "/" && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,14 +78,16 @@ export function Navigation() {
   return (
     <header
       className={`fixed z-50 transition-all duration-500 ${
-        isScrolled ? "top-4 left-4 right-4" : "top-0 left-0 right-0"
+        isScrolled ? "top-3 left-3 right-3" : "top-4 left-4 right-4"
       }`}
     >
       <nav
-        className={`mx-auto transition-all duration-500 ${
+        className={`mx-auto transition-all duration-500 rounded-2xl border backdrop-blur-xl ${
           isScrolled || isMobileMenuOpen
-            ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg max-w-300"
-            : "bg-transparent max-w-350"
+            ? "bg-background/80 border-foreground/10 shadow-lg max-w-[1200px]"
+            : isHomeUnscrolled
+              ? "bg-black/30 border-white/10 max-w-[1400px]"
+              : "bg-background/60 border-foreground/10 max-w-[1400px]"
         }`}
       >
         <div
@@ -101,34 +96,21 @@ export function Navigation() {
           }`}
         >
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 group"
-          >
-            <span
-              className={`font-display tracking-tight transition-all duration-500 ${isScrolled ? "text-xl text-foreground" : "text-2xl dark:text-foreground text-white"}`}
-            >
-              CyberSpace
-            </span>
-            <span
-              className={`font-mono transition-all duration-500 ${isScrolled ? "text-[10px] mt-0.5 text-muted-foreground" : "text-xs mt-1 dark:text-foreground text-white"}`}
-            >
-              DIGITAL
-            </span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className={`font-display tracking-tight transition-all duration-500 ${isScrolled ? "text-xl text-foreground" : isHomeUnscrolled ? "text-2xl text-white" : "text-2xl text-foreground"}`}>CyberSpace</span>
+            <span className={`font-mono transition-all duration-500 ${isScrolled ? "text-[10px] mt-0.5 text-muted-foreground" : isHomeUnscrolled ? "text-xs mt-1 text-white/60" : "text-xs mt-1 text-muted-foreground"}`}>DIGITAL</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12">
-            {navLinks.map(link => (
+            {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 href={link.href}
-                className={`text-sm transition-colors duration-300 relative group ${isScrolled ? "text-foreground/70 hover:text-foreground" : "dark:text-foreground/70 text-white dark:hover:text-foreground/60"}`}
+                className={`text-sm transition-colors duration-300 relative group ${isScrolled ? "text-foreground/70 hover:text-foreground" : isHomeUnscrolled ? "text-white/70 hover:text-white" : "text-foreground/70 hover:text-foreground"}`}
               >
                 {link.name}
-                <span
-                  className={`absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full ${isScrolled ? "bg-foreground" : "bg-white"}`}
-                />
+                <span className={`absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full ${isScrolled ? "bg-foreground" : isHomeUnscrolled ? "bg-white" : "bg-foreground"}`} />
               </NavLink>
             ))}
           </div>
@@ -138,7 +120,7 @@ export function Navigation() {
             <Button
               asChild
               size="sm"
-              className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-foreground hover:bg-foreground/90 text-background px-4 h-8 text-xs" : "bg-white hover:bg-white/90 text-black px-6"}`}
+              className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-foreground hover:bg-foreground/90 text-background px-4 h-8 text-xs" : isHomeUnscrolled ? "bg-white hover:bg-white/90 text-black px-6" : "bg-foreground hover:bg-foreground/90 text-background px-6"}`}
             >
               <SectionLink href="/#contact">Start a project</SectionLink>
             </Button>
@@ -147,7 +129,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`md:hidden p-2 transition-colors duration-500 ${isScrolled || isMobileMenuOpen ? "text-foreground" : "text-white"}`}
+            className={`md:hidden p-2 transition-colors duration-500 ${isScrolled || isMobileMenuOpen || !isHomeUnscrolled ? "text-foreground" : "text-white"}`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -157,6 +139,7 @@ export function Navigation() {
             )}
           </button>
         </div>
+
       </nav>
 
       {/* Mobile Menu - Full Screen Overlay */}
@@ -181,9 +164,7 @@ export function Navigation() {
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-4"
                 }`}
-                style={{
-                  transitionDelay: isMobileMenuOpen ? `${i * 75}ms` : "0ms",
-                }}
+                style={{ transitionDelay: isMobileMenuOpen ? `${i * 75}ms` : "0ms" }}
               >
                 {link.name}
               </NavLink>
@@ -191,22 +172,18 @@ export function Navigation() {
           </div>
 
           {/* Bottom CTA */}
-          <div
-            className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
-              isMobileMenuOpen
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-            style={{ transitionDelay: isMobileMenuOpen ? "300ms" : "0ms" }}
+          <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${
+            isMobileMenuOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4"
+          }`}
+          style={{ transitionDelay: isMobileMenuOpen ? "300ms" : "0ms" }}
           >
             <Button
               asChild
               className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
             >
-              <SectionLink
-                href="/#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
+              <SectionLink href="/#contact" onClick={() => setIsMobileMenuOpen(false)}>
                 Start a project
               </SectionLink>
             </Button>

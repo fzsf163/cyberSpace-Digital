@@ -13,17 +13,19 @@ Layout replicated from a dark digital-agency reference (Mortar template's struct
 
 1. **Navigation** — sticky, links to in-page anchors + `/work` (unchanged through the redesign)
 2. **Hero** — eyebrow tag, giant two-line headline, right-shifted sub copy + CTA, stats row, background video, bottom marquee strip
-3. **About** — two-column: heading/copy/achievement rows (left) + autoplay muted looping studio-reel video (right, placeholder clip)
-4. **CTA marquee** — scrolling "Let's build something great" strip + "Start a project" button (`cta-marquee.tsx`, rendered twice on the page)
-5. **Featured Work** — "Selected projects / (2023 — 2026)* / Latest work." header, 4 featured cards in a 2-col grid from the shared data source, centered "View all work" pill → `/work`
-6. **Services** — "Scope of work." stacked full-width rows: number, 2-line title, description, `+ capability` list, stat
-7. **CTA marquee** (second instance)
-8. **Process** — "Solution in process." 3 giant step rows (Step 01–03) + founder quote block
-9. **Testimonials** — "They love us." + REVIEWED badge, static 2×2 review-card grid
-10. **Articles** — "Latest articles." static journal rows (category chip, date, title) — deliberately non-clickable, no blog exists
-11. **Pricing / Engagement models** — kept (not part of the reference layout) because the nav's `#pricing` link must keep resolving
+3. **Client logos** — "Trusted by" eyebrow + a continuously auto-scrolling marquee of client wordmarks (text logotypes, no image assets), immediate social proof below the hero
+4. **About** — two-column: heading/copy/achievement rows (left) + autoplay muted looping studio-reel video (right, placeholder clip)
+5. **CTA marquee** — scrolling "Let's build something great" strip + "Start a project" button (`cta-marquee.tsx`, rendered twice on the page)
+6. **Featured Work** — "Selected projects / (2023 — 2026)* / Latest work." header, 4 featured cards in a 2-col grid from the shared data source, centered "View all work" pill → `/work`
+7. **Services** — "Scope of work." stacked full-width rows: number, 2-line title, description, `+ capability` list, stat
+8. **Team** — "The team." intro copy + a grid of team members (initial-avatar circle, name, role, one-line bio)
+9. **CTA marquee** (second instance)
+10. **Process** — "Solution in process." 3 giant step rows (Step 01–03) + founder quote block
+11. **Testimonials** — "They love us." + REVIEWED badge, carousel of review cards
 12. **Contact** — repeated-word marquee strip + final pitch + the contact form (name, email, message). No backend: submit validates client-side and shows a toast
 13. **Footer** — unchanged
+
+No package/pricing tiers and no blog/articles section — both were removed; the site does not offer engagement-model pricing and there is no blog to link to.
 
 `metrics-section` was dropped in the redesign (its stats live in the Hero and About sections now). `security-section`, `developers-section`, and `integrations-section` were COMPUTE-product-specific and are long gone.
 

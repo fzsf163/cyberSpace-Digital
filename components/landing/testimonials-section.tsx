@@ -2,6 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const testimonials = [
   {
@@ -31,6 +39,34 @@ const testimonials = [
       "Our organic traffic tripled within six months. The growth team treats our budget like it's their own.",
     author: "James Liu",
     role: "Marketing Director, Verdant Foods",
+  },
+  {
+    headline: "Launch day, zero surprises.",
+    quote:
+      "We shipped a full platform migration with no downtime and no support tickets. The handoff docs alone were worth the engagement.",
+    author: "Priya Nair",
+    role: "Engineering Lead, Solace Health",
+  },
+  {
+    headline: "A brand voice that finally sticks.",
+    quote:
+      "Every piece of copy they wrote sounded like us, just sharper. Our sales team still quotes lines from the new site.",
+    author: "Tom Reyes",
+    role: "Founder, Driftwood Coffee",
+  },
+  {
+    headline: "Design partners, not vendors.",
+    quote:
+      "They pushed back on our first brief and were right to. The end result solved a problem we hadn't even named yet.",
+    author: "Ana Kowalski",
+    role: "Head of Design, Fjord Robotics",
+  },
+  {
+    headline: "Support that actually responds.",
+    quote:
+      "Post-launch support has been instant. Any bug we've flagged got fixed the same day, no back-and-forth required.",
+    author: "David Okoro",
+    role: "COO, Lantern Analytics",
   },
 ];
 
@@ -92,32 +128,53 @@ export function TestimonialsSection() {
         </div>
 
         {/* Review cards */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <figure
-              key={testimonial.author}
-              className={`border border-foreground/10 bg-foreground/2 p-8 lg:p-10 transition-all duration-700 hover:border-foreground/25 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-full bg-foreground/10 flex items-center justify-center">
-                  <span className="font-display text-lg">
-                    {testimonial.author.charAt(0)}
-                  </span>
-                </div>
-                <figcaption>
-                  <p className="font-medium">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                </figcaption>
-              </div>
-              <p className="text-2xl font-display mb-4">{testimonial.headline}</p>
-              <blockquote className="text-muted-foreground leading-relaxed">
-                {testimonial.quote}
-              </blockquote>
-            </figure>
-          ))}
+        <div
+          className={`transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[
+              Autoplay({
+                delay: 4000,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-6">
+              {testimonials.map((testimonial) => (
+                <CarouselItem
+                  key={testimonial.author}
+                  className="pl-6 sm:basis-1/2 lg:basis-1/3"
+                >
+                  <figure className="h-full border border-foreground/10 bg-foreground/2 p-8 lg:p-10 transition-all duration-300 hover:border-foreground/25">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 rounded-full bg-foreground/10 flex items-center justify-center">
+                        <span className="font-display text-lg">
+                          {testimonial.author.charAt(0)}
+                        </span>
+                      </div>
+                      <figcaption>
+                        <p className="font-medium">{testimonial.author}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      </figcaption>
+                    </div>
+                    <p className="text-2xl font-display mb-4">{testimonial.headline}</p>
+                    <blockquote className="text-muted-foreground leading-relaxed">
+                      {testimonial.quote}
+                    </blockquote>
+                  </figure>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex items-center justify-end gap-3 mt-10">
+              <CarouselPrevious className="static translate-x-0 translate-y-0 rounded-none" />
+              <CarouselNext className="static translate-x-0 translate-y-0 rounded-none" />
+            </div>
+          </Carousel>
         </div>
       </div>
     </section>

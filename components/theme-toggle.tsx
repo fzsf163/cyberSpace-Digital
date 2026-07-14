@@ -26,7 +26,7 @@ export function ThemeToggle() {
         aria-pressed={isDark}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.9 }}
-        className="flex size-11 items-center justify-center overflow-hidden rounded-l-full border border-r-0 border-border bg-background/80 shadow-lg backdrop-blur-xl"
+        className="flex size-11 items-center justify-center overflow-hidden rounded-l-full border border-r-0 border-border bg-muted shadow-lg"
       >
         <AnimatePresence mode="wait" initial={false}>
           {isDark ? (
@@ -38,7 +38,7 @@ export function ThemeToggle() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex items-center justify-center"
             >
-              <Moon className="size-4 text-foreground" />
+              <Moon className="size-4 text-foreground" strokeWidth={2.75} />
             </motion.span>
           ) : (
             <motion.span
@@ -49,7 +49,7 @@ export function ThemeToggle() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex items-center justify-center"
             >
-              <Sun className="size-4 text-foreground" />
+              <Sun className="size-4 text-amber-800" strokeWidth={2.75} />
             </motion.span>
           )}
         </AnimatePresence>
