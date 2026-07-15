@@ -69,7 +69,9 @@ cp -r public .next/standalone/public
 node .next/standalone/server.js   # PORT/HOSTNAME env vars supported
 ```
 
-> **Note:** the Docker and Netlify configs in this repo predate the switch to standalone output and still target the old static-export `out/` directory — they are being reworked. Don't rely on them until that lands.
+**Docker:** `Dockerfile` and `compose.yaml` are a three-stage, non-root, read-only build targeting the standalone server (~78MB final image). Run with `docker compose up --build`, served at `http://localhost:3000`.
+
+**Netlify:** `netlify.toml` uses `@netlify/plugin-nextjs`, which understands standalone/SSR output directly — no manual config beyond what's checked in.
 
 ## AI-assisted workflow
 
