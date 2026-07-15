@@ -203,20 +203,6 @@ export function ContactSection() {
           <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes contact-marquee {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-contact-marquee {
-          animation: contact-marquee 45s linear infinite;
-        }
-      `}</style>
     </section>
   );
 }
