@@ -111,7 +111,7 @@ export function TestimonialsSection() {
 
           {/* Review badge */}
           <div
-            className={`flex items-center gap-4 px-5 py-4 border border-foreground/15 transition-all duration-1000 delay-200 ${
+            className={`flex items-center gap-4 px-5 py-4 rounded-xl border border-foreground/15 transition-all duration-1000 delay-200 ${
               isVisible ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -150,7 +150,7 @@ export function TestimonialsSection() {
                   key={testimonial.author}
                   className="pl-6 sm:basis-1/2 lg:basis-1/3"
                 >
-                  <figure className="h-full border border-foreground/10 bg-foreground/2 p-8 lg:p-10 transition-all duration-300 hover:border-foreground/25">
+                  <figure className="h-full rounded-2xl border border-foreground/10 bg-foreground/2 p-8 lg:p-10 transition-all duration-300 hover:border-foreground/25">
                     <div className="flex items-center gap-4 mb-8">
                       <div className="w-12 h-12 rounded-full bg-foreground/10 flex items-center justify-center">
                         <span className="font-display text-lg">
@@ -171,8 +171,8 @@ export function TestimonialsSection() {
               ))}
             </CarouselContent>
             <div className="flex items-center justify-end gap-3 mt-10">
-              <CarouselPrevious className="static translate-x-0 translate-y-0 rounded-none" />
-              <CarouselNext className="static translate-x-0 translate-y-0 rounded-none" />
+              <CarouselPrevious className="static translate-x-0 translate-y-0" />
+              <CarouselNext className="static translate-x-0 translate-y-0" />
             </div>
           </Carousel>
         </div>

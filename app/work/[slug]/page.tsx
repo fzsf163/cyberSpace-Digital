@@ -97,7 +97,7 @@ export default async function WorkDetailPage({
           </div>
 
           {/* Banner */}
-          <div className="relative aspect-16/9 overflow-hidden rounded-[20px] border border-foreground/10 mb-14">
+          <div className="relative aspect-16/9 overflow-hidden rounded-3xl border border-foreground/10 mb-14">
             <img
               src={item.coverImage}
               alt={item.title}
@@ -171,7 +171,7 @@ export default async function WorkDetailPage({
 
             {/* Services aside */}
             <aside className="lg:col-span-4">
-              <div className="lg:sticky lg:top-28 rounded-[20px] border border-foreground/10 bg-card p-8">
+              <div className="lg:sticky lg:top-28 rounded-3xl border border-foreground/10 bg-card p-8">
                 <h2 className="font-display text-2xl mb-6">Services provided</h2>
                 <ul className="space-y-4">
                   {services.map((service) => (

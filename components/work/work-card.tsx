@@ -8,7 +8,7 @@ export function WorkCard({ item }: { item: WorkItem }) {
     <Link href={`/work/${item.slug}`} className="group block">
       {/* Cover with a notch cut out of the top-right corner */}
       <div className="relative">
-        <div className="corner-notch relative aspect-16/9 overflow-hidden rounded-t-[20px]">
+        <div className="corner-notch relative aspect-16/9 overflow-hidden rounded-t-3xl">
           <img
             src={item.coverImage}
             alt={item.title}
@@ -31,7 +31,7 @@ export function WorkCard({ item }: { item: WorkItem }) {
       </div>
 
       {/* Meta */}
-      <div className="rounded-b-[20px] border border-t-0 border-foreground/10 bg-card px-7 pb-8 pt-6">
+      <div className="rounded-b-3xl border border-t-0 border-foreground/10 bg-card px-7 pb-8 pt-6">
         <h3 className="font-display text-2xl transition-transform duration-500 group-hover:translate-x-1 lg:text-3xl">
           {item.title}
         </h3>
