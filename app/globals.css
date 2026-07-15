@@ -175,14 +175,23 @@
     animation: marquee-reverse 25s linear infinite;
   }
 
+  .animate-contact-marquee {
+    animation: contact-marquee 45s linear infinite;
+  }
+
   @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
-  
+
   @keyframes marquee-reverse {
     0% { transform: translateX(-50%); }
     100% { transform: translateX(0); }
+  }
+
+  @keyframes contact-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
   
   .line-reveal {
