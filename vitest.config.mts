@@ -1,12 +1,13 @@
-import tsconfigPaths from "vite-tsconfig-paths";
 import { configDefaults, defineConfig } from "vitest/config";
 
-// Unit-test config only — the production build (next build, static export)
+// Unit-test config only — the production build (next build, standalone output)
 // does not touch this file. Test files are colocated next to their source
 // as `<name>.test.ts(x)`.
 export default defineConfig({
-  // Resolves the `@/*` path alias from tsconfig.json in test files.
-  plugins: [tsconfigPaths()],
+  resolve: {
+    // Resolves the `@/*` path alias from tsconfig.json in test files.
+    tsconfigPaths: true,
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
