@@ -13,16 +13,16 @@ const footerLinks = {
   Company: [
     { name: "Work", href: "/work" },
     { name: "Process", href: "/#process" },
-    { name: "Careers", href: "#", badge: "Hiring" },
+    { name: "Careers", href: "/careers" },
   ],
   Resources: [
     { name: "Case studies", href: "/work" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "FAQ", href: "#" },
+    { name: "Testimonials", href: "/#testimonials" },
+    { name: "FAQ", href: "/faq" },
   ],
   Legal: [
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
   ],
 };
 
@@ -149,11 +149,6 @@ export function FooterSection() {
                         className="text-sm text-foreground/40 hover:text-foreground transition-colors inline-flex items-center gap-2"
                       >
                         {link.name}
-                        {"badge" in link && link.badge && (
-                          <span className="text-xs px-2 py-0.5 bg-white text-black rounded-full">
-                            {link.badge}
-                          </span>
-                        )}
                       </a>
                     </li>
                   ))}
