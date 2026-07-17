@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -33,7 +33,7 @@ export function HeroSection() {
           className="w-full h-full object-cover object-center opacity-80"
         >
           <source
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4"
+            src="https://videos.pexels.com/video-files/12954605/12954605-hd_1920_1080_24fps.mp4"
             type="video/mp4"
           />
         </video>
@@ -97,8 +97,11 @@ export function HeroSection() {
             isVisible ? "opacity-100" : "opacity-0"
           }`}
         >
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-2">
+          {stats.map(stat => (
+            <div
+              key={stat.label}
+              className="flex flex-col gap-2"
+            >
               <span className="text-3xl lg:text-4xl font-display text-white">
                 {stat.value}
               </span>
@@ -111,12 +114,18 @@ export function HeroSection() {
       </div>
 
       {/* Bottom marquee strip */}
-      <div className="relative z-10 border-t border-white/10 py-5 overflow-hidden" aria-hidden="true">
+      <div
+        className="relative z-10 border-t border-white/10 py-5 overflow-hidden"
+        aria-hidden="true"
+      >
         <div className="flex w-max animate-hero-marquee">
-          {[0, 1].map((half) => (
-            <div key={half} className="flex shrink-0 items-center">
+          {[0, 1].map(half => (
+            <div
+              key={half}
+              className="flex shrink-0 items-center"
+            >
               {Array.from({ length: 4 }).flatMap((_, rep) =>
-                marqueeItems.map((item) => (
+                marqueeItems.map(item => (
                   <span
                     key={`${rep}-${item}`}
                     className="flex items-center gap-6 pr-6 text-2xl lg:text-3xl font-display text-white/30 whitespace-nowrap"
@@ -124,7 +133,7 @@ export function HeroSection() {
                     {item}
                     <span className="text-white/15">✳</span>
                   </span>
-                ))
+                )),
               )}
             </div>
           ))}

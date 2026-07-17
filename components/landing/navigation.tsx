@@ -12,8 +12,10 @@ import { SectionLink } from "@/components/landing/section-link";
 // on /work or /work/[slug] they route home and scroll, not to a dead anchor.
 const navLinks = [
   { name: "Services", href: "/#services" },
-  { name: "Process", href: "/#process" },
   { name: "Work", href: "/work" },
+  { name: "Process", href: "/#process" },
+  { name: "Careers", href: "/careers" },
+  { name: "FAQ", href: "/faq" },
 ];
 
 function NavLink({
@@ -102,7 +104,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
