@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { ScrollToTop } from '@/components/scroll-to-top'
 import './globals.css'
 
 const instrumentSans = Instrument_Sans({ 
@@ -40,6 +41,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           {children}
           <ThemeToggle />
+          <ScrollToTop />
           <Toaster />
         </ThemeProvider>
         <Analytics />
