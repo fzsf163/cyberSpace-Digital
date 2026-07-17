@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const achievements = [
   { value: "9+", label: "Years shaping digital brands" },
@@ -100,7 +100,7 @@ export function AboutSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="relative aspect-video border border-foreground/10 overflow-hidden bg-muted">
+            <div className="relative aspect-video border border-foreground/10 overflow-hidden bg-muted rounded-2xl">
               <video
                 autoPlay
                 muted
