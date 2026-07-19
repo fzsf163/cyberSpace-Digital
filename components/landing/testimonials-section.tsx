@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -10,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const testimonials = [
   {
@@ -71,49 +71,25 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-section-2">
+    <section className="relative py-24 lg:py-32 bg-section-2">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-8 mb-16 lg:mb-20">
-          <div>
-            <span
-              className={`inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6 transition-all duration-700 ${
-                isVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
+        <RevealGroup className="flex flex-wrap items-end justify-between gap-8 mb-16 lg:mb-20">
+          <RevealItem as="div">
+            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
               <span className="w-12 h-px bg-foreground/30" />
               Customer feedback
             </span>
-            <h2
-              className={`text-5xl md:text-6xl lg:text-7xl font-display tracking-tight leading-[0.95] transition-all duration-1000 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-display tracking-tight leading-[0.95]">
               They <span className="text-muted-foreground">love us.</span>
             </h2>
-          </div>
+          </RevealItem>
 
           {/* Review badge */}
-          <div
-            className={`flex items-center gap-4 px-5 py-4 rounded-xl border border-foreground/15 transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100" : "opacity-0"
-            }`}
+          <RevealItem
+            as="div"
+            className="flex items-center gap-4 px-5 py-4 rounded-xl border border-foreground/15"
           >
             <div className="flex gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -124,15 +100,11 @@ export function TestimonialsSection() {
               Reviewed
               <span className="block text-foreground mt-1">50 reviews</span>
             </div>
-          </div>
-        </div>
+          </RevealItem>
+        </RevealGroup>
 
         {/* Review cards */}
-        <div
-          className={`transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <Reveal>
           <Carousel
             opts={{ align: "start", loop: true }}
             plugins={[
@@ -175,7 +147,7 @@ export function TestimonialsSection() {
               <CarouselNext className="static translate-x-0 translate-y-0" />
             </div>
           </Carousel>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

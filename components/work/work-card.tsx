@@ -1,7 +1,14 @@
+"use client";
+
 import { ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { motion } from "motion/react";
 
 import type { WorkItem } from "@/lib/data/work";
+
+// motion-wrapped Link so the whole card gets a subtle lift/tap. Link forwards
+// its ref to the underlying <a>, which motion.create needs to drive transforms.
+const MotionLink = motion.create(Link);
 
 // The top-right "cut" is an illusion: a 3.5rem square patch painted in the
 // page background token (bg-section — both card contexts, the home featured
@@ -14,7 +21,13 @@ import type { WorkItem } from "@/lib/data/work";
 // patch will show; switch the token then.
 export function WorkCard({ item }: { item: WorkItem }) {
   return (
-    <Link href={`/work/${item.slug}`} className="group block">
+    <MotionLink
+      href={`/work/${item.slug}`}
+      className="group block"
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+    >
       {/* Cover with a square inverted-radius cut in the top-right corner
           (see the patch note above); the + badge nests in the cut. */}
       <div className="relative">
@@ -55,6 +68,6 @@ export function WorkCard({ item }: { item: WorkItem }) {
           {item.category}
         </span>
       </div>
-    </Link>
+    </MotionLink>
   );
 }

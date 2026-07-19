@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { CountUp } from "@/components/motion/count-up";
 
 const stats = [
   { value: "120+", label: "projects delivered" },
@@ -103,7 +104,7 @@ export function HeroSection() {
               className="flex flex-col gap-2"
             >
               <span className="text-3xl lg:text-4xl font-display text-white">
-                {stat.value}
+                <CountUp value={stat.value} />
               </span>
               <span className="text-xs text-white/50 leading-tight">
                 {stat.label}
@@ -151,6 +152,11 @@ export function HeroSection() {
         }
         .animate-hero-marquee {
           animation: hero-marquee 40s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-hero-marquee {
+            animation: none;
+          }
         }
       `}</style>
     </section>
