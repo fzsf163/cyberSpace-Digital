@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { ScrollToTop } from '@/components/scroll-to-top'
+import { ScrollProgress } from '@/components/scroll-progress'
 import './globals.css'
 
 const instrumentSans = Instrument_Sans({ 
@@ -39,6 +40,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <ScrollProgress />
           {children}
           <ThemeToggle />
           <ScrollToTop />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const steps = [
   {
@@ -27,52 +27,26 @@ const steps = [
 ];
 
 export function ProcessSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="process" ref={sectionRef} className="relative py-24 lg:py-32 bg-section">
+    <section id="process" className="relative py-24 lg:py-32 bg-section">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div className="mb-16 lg:mb-24">
-          <span
-            className={`inline-flex items-center gap-3 text-sm font-mono text-foreground/40 mb-6 transition-all duration-700 ${
-              isVisible ? "opacity-100" : "opacity-0"
-            }`}
-          >
+        <Reveal className="mb-16 lg:mb-24">
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-foreground/40 mb-6">
             <span className="w-12 h-px bg-foreground/20" />
             Working steps
           </span>
-          <h2
-            className={`text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] text-foreground transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <h2 className="text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] text-foreground">
             Solution in <span className="text-foreground/30">process.</span>
           </h2>
-        </div>
+        </Reveal>
 
         {/* Step rows */}
-        <div className="mb-20 lg:mb-28">
-          {steps.map((step, index) => (
-            <div
+        <RevealGroup className="mb-20 lg:mb-28">
+          {steps.map((step) => (
+            <RevealItem
               key={step.number}
-              className={`group grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-10 lg:py-14 border-t border-foreground/10 last:border-b transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 120}ms` }}
+              className="group grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-10 lg:py-14 border-t border-foreground/10 last:border-b"
             >
               <div className="lg:col-span-2 flex items-baseline gap-3">
                 <span className="text-sm font-mono text-foreground/40 uppercase tracking-widest">
@@ -90,16 +64,12 @@ export function ProcessSection() {
               <p className="lg:col-span-4 text-foreground/60 leading-relaxed">
                 {step.description}
               </p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
 
         {/* Founder quote */}
-        <div
-          className={`max-w-3xl transition-all duration-1000 delay-300 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
+        <Reveal className="max-w-3xl" delay={0.1}>
           <p className="text-2xl lg:text-3xl font-display text-foreground/80 leading-snug mb-8">
             &ldquo;Every engagement runs through the same senior team, start to
             finish — that&apos;s how the work stays sharp from brief to
@@ -116,7 +86,7 @@ export function ProcessSection() {
               </p>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

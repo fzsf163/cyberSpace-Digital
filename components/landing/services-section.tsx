@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const services = [
   {
@@ -38,62 +38,32 @@ const services = [
 ];
 
 export function ServicesSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="services" ref={sectionRef} className="relative py-24 lg:py-32 bg-section-2">
+    <section id="services" className="relative py-24 lg:py-32 bg-section-2">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div className="grid lg:grid-cols-12 gap-8 items-end mb-16 lg:mb-24">
+        <Reveal className="grid lg:grid-cols-12 gap-8 items-end mb-16 lg:mb-24">
           <div className="lg:col-span-7">
-            <span
-              className={`inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6 transition-all duration-700 ${
-                isVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
+            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
               <span className="w-12 h-px bg-foreground/30" />
               Smart solutions
             </span>
-            <h2
-              className={`text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
+            <h2 className="text-6xl md:text-7xl lg:text-[110px] font-display tracking-tight leading-[0.9]">
               Scope of <span className="text-muted-foreground">work.</span>
             </h2>
           </div>
-          <p
-            className={`lg:col-span-5 text-xl text-muted-foreground leading-relaxed transition-all duration-1000 delay-150 ${
-              isVisible ? "opacity-100" : "opacity-0"
-            }`}
-          >
+          <p className="lg:col-span-5 text-xl text-muted-foreground leading-relaxed">
             Four disciplines, one senior team — everything a brand needs to
             launch and keep growing online.
           </p>
-        </div>
+        </Reveal>
 
         {/* Service rows */}
-        <div>
-          {services.map((service, index) => (
-            <div
+        <RevealGroup>
+          {services.map((service) => (
+            <RevealItem
               key={service.number}
-              className={`group grid lg:grid-cols-12 gap-6 lg:gap-8 py-12 lg:py-16 border-t border-foreground/10 last:border-b transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 120}ms` }}
+              className="group grid lg:grid-cols-12 gap-6 lg:gap-8 py-12 lg:py-16 border-t border-foreground/10 last:border-b"
             >
               {/* Number */}
               <span className="lg:col-span-1 font-mono text-sm text-muted-foreground pt-2">
@@ -134,9 +104,9 @@ export function ServicesSection() {
                   {service.stat.label}
                 </span>
               </div>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );
