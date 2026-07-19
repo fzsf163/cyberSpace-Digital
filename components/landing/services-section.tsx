@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
 
 const services = [
   {
@@ -98,7 +99,7 @@ export function ServicesSection() {
               {/* Stat */}
               <div className="lg:col-span-3 lg:text-right">
                 <span className="text-4xl lg:text-5xl font-display block">
-                  {service.stat.value}
+                  <CountUp value={service.stat.value} />
                 </span>
                 <span className="text-xs text-muted-foreground font-mono mt-2 block">
                   {service.stat.label}

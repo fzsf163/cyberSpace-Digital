@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { MotionConfig } from 'motion/react'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -40,11 +41,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <ScrollProgress />
-          {children}
-          <ThemeToggle />
-          <ScrollToTop />
-          <Toaster />
+          <MotionConfig reducedMotion="user">
+            <ScrollProgress />
+            {children}
+            <ThemeToggle />
+            <ScrollToTop />
+            <Toaster />
+          </MotionConfig>
         </ThemeProvider>
         <Analytics />
       </body>

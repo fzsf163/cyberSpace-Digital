@@ -57,6 +57,11 @@ export function CtaMarquee({ variant = "a" }: { variant?: "a" | "b" }) {
         .animate-cta-marquee {
           animation: cta-marquee 35s linear infinite;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-cta-marquee {
+            animation: none;
+          }
+        }
       `}</style>
     </section>
   );

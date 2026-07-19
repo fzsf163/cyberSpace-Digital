@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
 const contactFormSchema = z.object({
@@ -29,26 +30,12 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export function ContactSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: { name: "", email: "", message: "" },
   });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -69,7 +56,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-section">
+    <section id="contact" className="relative py-24 lg:py-32 overflow-hidden bg-section">
       {/* Repeated word strip */}
       <div className="overflow-hidden mb-12 lg:mb-16" aria-hidden="true">
         <div className="flex w-max animate-contact-marquee">
@@ -89,12 +76,11 @@ export function ContactSection() {
       </div>
 
       <div className="max-w-350 mx-auto px-6 lg:px-12">
-        <div
-          className={`relative rounded-3xl border border-foreground overflow-hidden transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-          onMouseMove={handleMouseMove}
-        >
+        <Reveal>
+          <div
+            className="relative rounded-3xl border border-foreground overflow-hidden"
+            onMouseMove={handleMouseMove}
+          >
           {/* Spotlight effect */}
           <div
             className="absolute inset-0 opacity-10 pointer-events-none transition-opacity duration-300"
@@ -201,7 +187,8 @@ export function ContactSection() {
           {/* Decorative corner */}
           <div className="absolute top-0 right-0 w-32 h-32 border-b border-l border-foreground/10" />
           <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

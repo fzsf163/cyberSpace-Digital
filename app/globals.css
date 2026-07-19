@@ -294,4 +294,17 @@
       background-position: 0% 50%;
     }
   }
+
+  /* Honor the OS "reduce motion" setting: freeze the continuously looping
+     animations (WCAG 2.2.2). One-shot entrance/hover effects are left alone.
+     The styled-jsx marquees (hero/cta/client-logos) carry their own guard
+     inline; these are the globally-defined loops. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee,
+    .marquee-reverse,
+    .animate-contact-marquee,
+    .word-gradient {
+      animation: none;
+    }
+  }
 }

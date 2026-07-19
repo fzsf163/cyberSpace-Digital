@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Reveal } from "@/components/motion/reveal";
 
 const clients = [
   "Ironclad Systems",
@@ -14,32 +14,16 @@ const clients = [
 ];
 
 export function ClientLogosSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="relative py-16 lg:py-20 overflow-hidden bg-section-2">
+    <section className="relative py-16 lg:py-20 overflow-hidden bg-section-2">
       <div className="max-w-350 mx-auto px-6 lg:px-12">
-        <span
-          className={`inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-10 transition-all duration-700 ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}
+        <Reveal
+          as="span"
+          className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-10"
         >
           <span className="w-12 h-px bg-foreground/30" />
           Trusted by
-        </span>
+        </Reveal>
       </div>
 
       {/* Auto-scrolling logo strip */}
@@ -69,6 +53,11 @@ export function ClientLogosSection() {
         }
         .animate-client-logos-marquee {
           animation: client-logos-marquee 40s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-client-logos-marquee {
+            animation: none;
+          }
         }
       `}</style>
     </section>
