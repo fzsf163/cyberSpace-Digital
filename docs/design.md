@@ -25,7 +25,7 @@ Three font variables already wired in [app/layout.tsx](../app/layout.tsx), use t
 
 ## Motion
 
-- The `ascii-scene.tsx` 3D piece (via `@react-three/fiber`) sets the "premium technical" tone for the hero — don't add competing heavy motion elsewhere.
+- The Hero's background video sets the "premium technical" tone — don't add competing heavy motion elsewhere.
 - Keep other transitions subtle (opacity/transform on scroll or hover) — no gratuitous animation on the Work grid or Services cards.
 
 ## Imagery (new for Work section)
