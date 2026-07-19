@@ -1,6 +1,6 @@
 # CyberSpace Digital — Agency Site
 
-Marketing site for CyberSpace Digital, a full-service digital agency (brand, web, product, growth). Two pages: a single-scroll home page and a portfolio view-all page.
+Marketing site for CyberSpace Digital, a full-service digital agency (brand, web, product, growth). A single-scroll home page plus a portfolio (grid + per-project detail) and standalone content pages (careers, FAQ, legal).
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · shadcn/ui · Vitest + React Testing Library
 
@@ -10,7 +10,10 @@ Marketing site for CyberSpace Digital, a full-service digital agency (brand, web
 |---|---|
 | `/` | Navigation → Hero → Client logos (auto-scroll) → About → CTA marquee → Featured Work → Services → Team → CTA marquee → Process → Testimonials (carousel) → Contact → Footer |
 | `/work` | Full portfolio grid — all projects from the shared data source |
-| `/work/[slug]` | Individual project detail page |
+| `/work/[slug]` | Individual project detail page (SSG per project) |
+| `/careers` | Careers page — values, perks, hiring steps, open-positions empty state |
+| `/faq` | FAQ page — categorized accordion |
+| `/privacy`, `/terms` | Legal pages — share `components/legal/legal-page.tsx` |
 
 There is no pricing/package-tier section and no blog — both were deliberately removed; don't re-add a `#pricing` link or blog references.
 
@@ -39,7 +42,7 @@ pnpm dev          # dev server at http://localhost:3000
 ## Project structure
 
 ```
-app/                  Routes: / (page.tsx), /work, layout, global styles/tokens
+app/                  Routes: / (page.tsx), /work, /work/[slug], /careers, /faq, /privacy, /terms, layout, global styles/tokens
 components/landing/   Home-page sections — copy lives as consts inside each section file
 components/work/      WorkCard — the one shared portfolio card
 components/ui/        shadcn/ui primitives (generated; add via shadcn CLI)

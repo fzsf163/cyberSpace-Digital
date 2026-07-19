@@ -2,7 +2,7 @@
 
 Orientation file: what lives where and what each file contains, so you don't have to re-explore the tree every session. **Keep this updated** — when you add, rename, delete, or repurpose a file, update the matching line here in the same change.
 
-Last synced: 2026-07-15 (floating/route-aware navbar fix, theme-toggle rebuilt as a tap button, work-card 16:9, testimonials carousel, ClientLogos + Team sections added, Pricing/Articles removed, global thin dark scrollbar).
+Last synced: 2026-07-20 (obsolete `out/` directory deleted; scroll-motion + Web3Forms contact submit landed).
 
 ## Top-level layout
 
@@ -15,7 +15,6 @@ lib/                  utils + data
 hooks/                shared hooks
 docs/                 rebuild rules (this folder — see README.md index)
 public/               static assets (placeholder images, icons)
-out/                  OBSOLETE former static-export output — still committed but no longer produced (build emits .next/standalone now); untrack+delete is a pending cleanup
 .claude/agents/       subagent definitions (planning/design/code/test/docker)
 .claude/skills/       project skills / slash commands (pr, add-work, new-section, dev-report)
 ```
@@ -70,7 +69,6 @@ All section files are `"use client"` (animation hooks throughout). Each section 
 | `testimonials-section.tsx` | `TestimonialsSection` | — | "They love us." + 5-star REVIEWED badge; auto-playing carousel (shadcn `components/ui/carousel.tsx` + `embla-carousel-autoplay`, 4s delay, pauses on hover) of 8 review cards (avatar initial, name/role, bold headline, quote) — `lg:basis-1/3` (3-up desktop), `sm:basis-1/2` (2-up tablet), `basis-full` (1-up mobile). No longer a static 2×2 grid. `CarouselPrevious`/`CarouselNext` de-rounded (`rounded-none`) to match the site's sharp-corner convention. |
 | `contact-section.tsx` | `ContactSection` | `contact` | Repeated-word "Contact" marquee strip (global `animate-contact-marquee`, frozen under `prefers-reduced-motion`) + a spotlight-on-mousemove card (`Reveal`-wrapped) holding the contact form (name/email/message) — react-hook-form + zod schema (`contactFormSchema`) + shadcn Form/Input/Textarea/Button. Valid submit POSTs to **Web3Forms** (`api.web3forms.com/submit`, key from `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`) — success toast + reset on `data.success`, error toast otherwise (fields kept). `isSubmitting` disables the button. A hidden registered `botcheck` honeypot field rides along in the payload so Web3Forms drops bot submissions. |
 | `footer-section.tsx` | `FooterSection` | — | 4 link columns (Services/Company/Resources/Legal) + socials. Section links are root-relative (`/#services`, `/#process`, `/#testimonials`) so they resolve from `/work` too. Careers/FAQ/Privacy/Terms now link to their real routes (`/careers`, `/faq`, `/privacy`, `/terms`); only the socials remain `href="#"` placeholders. The old per-link `badge` ("Hiring") was dropped along with its render path — there are no open roles. No Pricing or Blog entries — both removed (no package tiers, no blog). |
-| `ascii-scene.tsx` | `AsciiScene` | — | ⚠️ **Dead code.** R3F/three 3D scene, no longer imported anywhere since the COMPUTE sections were deleted. Delete it (and check if `@react-three/fiber`/`three` deps become removable) or repurpose deliberately. |
 
 `metrics-section.tsx` was deleted in the Mortar-layout redesign — its stats moved into Hero/About.
 
