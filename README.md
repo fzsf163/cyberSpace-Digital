@@ -14,7 +14,7 @@ Marketing site for CyberSpace Digital, a full-service digital agency (brand, web
 
 There is no pricing/package-tier section and no blog — both were deliberately removed; don't re-add a `#pricing` link or blog references.
 
-The contact form validates client-side (react-hook-form + zod) and shows a success toast; there is intentionally no backend or API route.
+The contact form validates client-side (react-hook-form + zod) and POSTs valid submissions to [Web3Forms](https://web3forms.com) directly from the browser (no backend of our own), surfacing success/error as toasts. The access key is set in `.env` as `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`.
 
 The floating nav pill (`components/landing/navigation.tsx`) and the right-edge theme toggle (`components/theme-toggle.tsx`, tap button with an animated Sun/Moon swap) are both mounted site-wide and work identically on every route/theme combination.
 

@@ -25,6 +25,8 @@ const contactFormSchema = z.object({
   name: z.string().min(2, "Tell us your name."),
   email: z.string().email("Enter a valid email address."),
   message: z.string().min(10, "Give us a few more details about your project."),
+  // Honeypot — real users never toggle it; bots that fill every field do.
+  botcheck: z.boolean().optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -34,7 +36,7 @@ export function ContactSection() {
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
-    defaultValues: { name: "", email: "", message: "" },
+    defaultValues: { name: "", email: "", message: "", botcheck: false },
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -45,14 +47,47 @@ export function ContactSection() {
     });
   };
 
-  // Static export — there is no backend/API route to submit to. Validate
-  // client-side and show a success state, as if the message had been sent.
-  function onSubmit(values: ContactFormValues) {
-    void values;
-    toast.success("Message sent", {
-      description: "Thanks for reaching out — we'll get back to you within 1-2 business days.",
-    });
-    form.reset();
+  // Submits to Web3Forms (no backend of our own): a client-side POST that
+  // relays the message to the destination inbox. The access key is public by
+  // design (see .env). react-hook-form awaits this, so `isSubmitting` drives
+  // the button's disabled state.
+  async function onSubmit(values: ContactFormValues) {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          subject: "New project inquiry — CyberSpace Digital",
+          name: values.name,
+          email: values.email,
+          message: values.message,
+          botcheck: values.botcheck ?? false,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Message sent", {
+          description:
+            "Thanks for reaching out — we'll get back to you within 1-2 business days.",
+        });
+        form.reset();
+      } else {
+        toast.error("Something went wrong", {
+          description:
+            data.message ?? "Your message couldn't be sent. Please try again.",
+        });
+      }
+    } catch {
+      toast.error("Something went wrong", {
+        description: "Please check your connection and try again.",
+      });
+    }
   }
 
   return (
@@ -118,6 +153,18 @@ export function ContactSection() {
               <div className="w-full lg:max-w-md">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Honeypot — hidden from users & assistive tech; bots that
+                        fill it are dropped by Web3Forms. Registered so its value
+                        rides along in the submit payload. */}
+                    <input
+                      type="checkbox"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="hidden"
+                      style={{ display: "none" }}
+                      {...form.register("botcheck")}
+                    />
                     <FormField
                       control={form.control}
                       name="name"
